@@ -74,4 +74,12 @@ class MyColumn {
       this.clList});
 }
 
+set colValue(String? val) {
+  colValue = val;
+}
+
+set dropDown(List<String>? val) {
+  dropDown = val;
+}
+
 enum Requirement { required, optional, conditional }

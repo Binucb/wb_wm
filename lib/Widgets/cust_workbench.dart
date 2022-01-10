@@ -13,13 +13,15 @@ import 'package:universal_html/html.dart' as html;
 import '../constants.dart';
 
 class MyCustWBScreen extends StatelessWidget {
-  final Display? dItem;
-  const MyCustWBScreen({this.dItem, Key? key}) : super(key: key);
+  //final Display? dItem;
+  const MyCustWBScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var prov1 = Provider.of<ThemeProvider>(context, listen: false).appTheme;
     var prov = Provider.of<AttProvider>(context, listen: true);
+    var dProv = Provider.of<DBProvider>(context, listen: true);
+    Display? dItem = dProv.item;
 
     print("MyCustWBScreen item is building");
     // print(dItem!.ld!.attrVal!.colValue);
@@ -28,228 +30,235 @@ class MyCustWBScreen extends StatelessWidget {
 
     double ht = MediaQuery.of(context).size.height;
     double wt = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Container(
-        height: ht,
-        width: wt,
-        child: RawScrollbar(
-          thumbColor: accentColor,
-          radius: const Radius.circular(20),
-          thickness: 5,
-          child: SingleChildScrollView(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              //crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  children: [
-                    CustCard(
-                        //pn
-                        ht: ht * 0.08,
-                        wt: wt * 0.665,
-                        wd: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // SelectableText(
-                            //   "Product Name : ",
-                            //   style: Theme.of(context).textTheme.bodyText1,
-                            // ),
-                            EasyRichText(
-                              dItem!.pn!,
-                              selectable: true,
-                              caseSensitive: false,
-                              patternList: [
-                                EasyRichTextPattern(
-                                    matchWordBoundaries: false,
-                                    targetString:
-                                        context.watch<BackEndData>().lstWrds,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        backgroundColor: Colors.blue)),
-                                EasyRichTextPattern(
-                                    matchWordBoundaries: false,
-                                    targetString:
-                                        context.watch<PTProvider>().attrWrds,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        backgroundColor: Colors.green)),
-                              ],
-                            ),
+    return (dItem.itemID != "")
+        ? Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Container(
+              height: ht,
+              width: wt,
+              child: RawScrollbar(
+                thumbColor: accentColor,
+                radius: const Radius.circular(20),
+                thickness: 5,
+                child: SingleChildScrollView(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    //crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        children: [
+                          CustCard(
+                              //pn
+                              ht: ht * 0.08,
+                              wt: wt * 0.665,
+                              wd: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // SelectableText(
+                                  //   "Product Name : ",
+                                  //   style: Theme.of(context).textTheme.bodyText1,
+                                  // ),
+                                  EasyRichText(
+                                    dItem.pn!,
+                                    selectable: true,
+                                    caseSensitive: false,
+                                    patternList: [
+                                      EasyRichTextPattern(
+                                          matchWordBoundaries: false,
+                                          targetString: context
+                                              .watch<BackEndData>()
+                                              .lstWrds,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              backgroundColor: Colors.blue)),
+                                      EasyRichTextPattern(
+                                          matchWordBoundaries: false,
+                                          targetString: context
+                                              .watch<PTProvider>()
+                                              .attrWrds,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              backgroundColor: Colors.green)),
+                                    ],
+                                  ),
 
-                            // SelectableText(
-                            //   dItem!.pn!,
-                            //   style: Theme.of(context).textTheme.bodyText2,
-                            // ),
-                          ],
-                        )),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          children: [
-                            //sd
-                            Row(
-                              children: [
-                                CustCard(
+                                  // SelectableText(
+                                  //   dItem!.pn!,
+                                  //   style: Theme.of(context).textTheme.bodyText2,
+                                  // ),
+                                ],
+                              )),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                children: [
                                   //sd
-                                  ht: ht * 0.62,
-                                  wt: wt * 0.33,
+                                  Row(
+                                    children: [
+                                      CustCard(
+                                        //sd
+                                        ht: ht * 0.62,
+                                        wt: wt * 0.33,
 
-                                  wd: Column(
-                                    children: [
-                                      headerWidget(dItem!.sd!.attrVal!.header!),
-                                      const SizedBox(height: 0.6),
-                                      EasyRichText(
-                                        dItem!.sd!.attrVal!.colValue,
-                                        selectable: true,
-                                        caseSensitive: false,
-                                        patternList: [
-                                          EasyRichTextPattern(
-                                              matchWordBoundaries: false,
-                                              targetString: context
-                                                  .watch<BackEndData>()
-                                                  .lstWrds,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  backgroundColor:
-                                                      Colors.blue)),
-                                          EasyRichTextPattern(
-                                              matchWordBoundaries: false,
-                                              targetString: context
-                                                  .watch<PTProvider>()
-                                                  .attrWrds,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  backgroundColor:
-                                                      Colors.green)),
-                                        ],
-                                      ), // SelectableText(
-                                      //     dItem!.sd!.attrVal!.colValue),
-                                      Expanded(
-                                          child: Align(
-                                              alignment:
-                                                  FractionalOffset.bottomCenter,
-                                              child: CustBox(
-                                                headerString:
-                                                    dItem!.sd!.attrVal!.header!,
-                                                errCol:
-                                                    dItem!.sd!.decCol!.colNum,
-                                                erCodCol:
-                                                    dItem!.sd!.errCode!.colNum,
-                                                comCol:
-                                                    dItem!.sd!.comments!.colNum,
-                                                errVal:
-                                                    dItem!.sd!.decCol!.colValue,
-                                                erCodVal: dItem!
-                                                    .sd!.errCode!.colValue,
-                                                comVal: dItem!
-                                                    .sd!.comments!.colValue,
-                                              ))),
-                                    ],
-                                  ),
-                                ),
-                                CustCard(
-                                  //ld
-                                  ht: ht * 0.62,
-                                  wt: wt * 0.33,
-                                  wd: Column(
-                                    children: [
-                                      headerWidget(dItem!.ld!.attrVal!.header!),
-                                      const SizedBox(height: 0.6),
-                                      EasyRichText(
-                                        dItem!.ld!.attrVal!.colValue,
-                                        selectable: true,
-                                        caseSensitive: false,
-                                        patternList: [
-                                          EasyRichTextPattern(
-                                              matchWordBoundaries: false,
-                                              targetString: context
-                                                  .watch<BackEndData>()
-                                                  .lstWrds,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  backgroundColor:
-                                                      Colors.blue)),
-                                          EasyRichTextPattern(
-                                              matchWordBoundaries: false,
-                                              targetString: context
-                                                  .watch<PTProvider>()
-                                                  .attrWrds,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  backgroundColor:
-                                                      Colors.green)),
-                                        ],
+                                        wd: Column(
+                                          children: [
+                                            headerWidget(
+                                                dItem.sd!.attrVal!.header!),
+                                            const SizedBox(height: 0.6),
+                                            EasyRichText(
+                                              dItem.sd!.attrVal!.colValue,
+                                              selectable: true,
+                                              caseSensitive: false,
+                                              patternList: [
+                                                EasyRichTextPattern(
+                                                    matchWordBoundaries: false,
+                                                    targetString: context
+                                                        .watch<BackEndData>()
+                                                        .lstWrds,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.blue)),
+                                                EasyRichTextPattern(
+                                                    matchWordBoundaries: false,
+                                                    targetString: context
+                                                        .watch<PTProvider>()
+                                                        .attrWrds,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.green)),
+                                              ],
+                                            ), // SelectableText(
+                                            //     dItem!.sd!.attrVal!.colValue),
+                                            Expanded(
+                                                child: Align(
+                                                    alignment: FractionalOffset
+                                                        .bottomCenter,
+                                                    child: CustBox(
+                                                      attr: dItem.sd,
+                                                      key: key,
+                                                      headerString: dItem
+                                                          .sd!.attrVal!.header!,
+                                                      errCol: dItem
+                                                          .sd!.decCol!.colNum,
+                                                      erCodCol: dItem
+                                                          .sd!.errCode!.colNum,
+                                                      comCol: dItem
+                                                          .sd!.comments!.colNum,
+                                                      errVal: dItem
+                                                          .sd!.decCol!.colValue,
+                                                      erCodVal: dItem.sd!
+                                                          .errCode!.colValue,
+                                                      comVal: dItem.sd!
+                                                          .comments!.colValue,
+                                                    ))),
+                                          ],
+                                        ),
                                       ),
+                                      CustCard(
+                                        //ld
+                                        ht: ht * 0.62,
+                                        wt: wt * 0.33,
+                                        wd: Column(
+                                          children: [
+                                            headerWidget(
+                                                dItem.ld!.attrVal!.header!),
+                                            const SizedBox(height: 0.6),
+                                            EasyRichText(
+                                              dItem.ld!.attrVal!.colValue,
+                                              selectable: true,
+                                              caseSensitive: false,
+                                              patternList: [
+                                                EasyRichTextPattern(
+                                                    matchWordBoundaries: false,
+                                                    targetString: context
+                                                        .watch<BackEndData>()
+                                                        .lstWrds,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.blue)),
+                                                EasyRichTextPattern(
+                                                    matchWordBoundaries: false,
+                                                    targetString: context
+                                                        .watch<PTProvider>()
+                                                        .attrWrds,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.green)),
+                                              ],
+                                            ),
 
-                                      // SelectableText(
-                                      //     dItem!.ld!.attrVal!.colValue),
-                                      Expanded(
-                                          child: Align(
-                                              alignment:
-                                                  FractionalOffset.bottomCenter,
-                                              child: CustBox(
-                                                headerString:
-                                                    dItem!.ld!.attrVal!.header!,
-                                                errCol:
-                                                    dItem!.ld!.decCol!.colNum,
-                                                erCodCol:
-                                                    dItem!.ld!.errCode!.colNum,
-                                                comCol:
-                                                    dItem!.ld!.comments!.colNum,
-                                                errVal:
-                                                    dItem!.ld!.decCol!.colValue,
-                                                erCodVal: dItem!
-                                                    .ld!.errCode!.colValue,
-                                                comVal: dItem!
-                                                    .ld!.comments!.colValue,
-                                              ))),
+                                            // SelectableText(
+                                            //     dItem!.ld!.attrVal!.colValue),
+                                            Expanded(
+                                                child: Align(
+                                                    alignment: FractionalOffset
+                                                        .bottomCenter,
+                                                    child: CustBox(
+                                                      attr: dItem.ld,
+                                                      key: key,
+                                                      headerString: dItem
+                                                          .ld!.attrVal!.header!,
+                                                      errCol: dItem
+                                                          .ld!.decCol!.colNum,
+                                                      erCodCol: dItem
+                                                          .ld!.errCode!.colNum,
+                                                      comCol: dItem
+                                                          .ld!.comments!.colNum,
+                                                      errVal: dItem
+                                                          .ld!.decCol!.colValue,
+                                                      erCodVal: dItem.ld!
+                                                          .errCode!.colValue,
+                                                      comVal: dItem.ld!
+                                                          .comments!.colValue,
+                                                    ))),
+                                          ],
+                                        ),
+                                      )
                                     ],
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    CustCard(
-                        //imgs
-                        ht: ht * 0.3,
-                        wt: wt * 0.665,
-                        wd: lstImages(dItem!.lstImages!))
-                  ],
-                ),
-                //attribute columns
-                Column(
-                  children: [
-                    CustLst(
-                        //attri
-                        ht: ht * 0.71,
-                        wt: wt * 0.31,
-                        //col: (prov1!) ? Colors.black : Colors.grey.shade200,
-                        wd: ListAttr(
-                            lst: (prov.showList!.isNotEmpty)
-                                ? prov.showList
-                                : dItem!.lstAttrs1)),
-                    CustCard(
-                      //attri
-                      ht: ht * 0.3,
-                      wt: wt * 0.31,
-                      wd: RowChips(
-                        dItem: dItem,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          CustCard(
+                              //imgs
+                              ht: ht * 0.3,
+                              wt: wt * 0.665,
+                              wd: lstImages(dItem.lstImages!))
+                        ],
                       ),
-                    ),
-                  ],
-                )
-              ],
-            ), //main 3 row
-          ),
-        ),
-      ),
-    );
+                      //attribute columns
+                      Column(
+                        children: [
+                          CustLst(
+                              //attri
+                              ht: ht * 0.71,
+                              wt: wt * 0.31,
+                              //col: (prov1!) ? Colors.black : Colors.grey.shade200,
+                              wd: ListAttr(bckLst: dItem.lstAttrs1)),
+                          CustCard(
+                            //attri
+                            ht: ht * 0.3,
+                            wt: wt * 0.31,
+                            wd: RowChips(
+                              dItem: dItem,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ), //main 3 row
+                ),
+              ),
+            ),
+          )
+        : const Text("Loading...");
   }
 }
 
@@ -391,6 +400,7 @@ Widget lstImages(List<ImageURL> imgUrl) {
 }
 
 class CustBox extends StatefulWidget {
+  final Attribute? attr;
   final String? headerString;
   final String? errVal;
   final int? errCol;
@@ -401,6 +411,7 @@ class CustBox extends StatefulWidget {
 
   const CustBox(
       {Key? key,
+      required this.attr,
       required this.headerString,
       required this.errCol,
       required this.erCodCol,
@@ -492,54 +503,60 @@ class _CustBoxState extends State<CustBox> {
           padding: const EdgeInsets.all(4.0),
           child: SizedBox(
             width: (MediaQuery.of(context).size.width * 0.3) / 4,
-            child: DropdownButtonFormField(
-              value: dd1Val ?? "",
-              style: Theme.of(context).textTheme.bodyText2,
-              decoration: InputDecoration(
-                isDense: true,
-                contentPadding: const EdgeInsets.fromLTRB(10, 15, 10, 10),
-                labelText: "Yes/No",
-                labelStyle: Theme.of(context).textTheme.bodyText1,
-                border: const OutlineInputBorder(),
+            child: Form(
+              key: widget.key,
+              child: DropdownButtonFormField(
+                value: dd1Val ?? "",
+                style: Theme.of(context).textTheme.bodyText2,
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.fromLTRB(10, 15, 10, 10),
+                  labelText: "Yes/No",
+                  labelStyle: Theme.of(context).textTheme.bodyText1,
+                  border: const OutlineInputBorder(),
+                ),
+                items: _decValues
+                    .map((e) => DropdownMenuItem(
+                          child: Text(e),
+                          value: e,
+                        ))
+                    .toList(),
+                onChanged: (String? value) async {
+                  var db = Provider.of<DBProvider>(context, listen: false);
+                  if (value == "Yes") {
+                    //print(dd2Val);
+                    if (dd2Val != "") {
+                      dd2Val = "";
+                      erCodValues = [];
+                      //print("I am runing when changing Yes decision");
+
+                      await db.saveToDB(widget.erCodCol!, "");
+                      widget.attr!.errCode!.colValue = "";
+                    }
+
+                    bringDD(widget.headerString!, "Yes");
+
+                    dd1Val = "Yes";
+                  } else if (value == "No") {
+                    if (dd2Val != "") {
+                      //print("I am runing when changing No decision");
+                      dd2Val = "";
+                      erCodValues = [];
+
+                      await db.saveToDB(widget.erCodCol!, "");
+                      widget.attr!.errCode!.colValue = "";
+                    }
+
+                    bringDD(widget.headerString!, "No");
+                    dd1Val = "No";
+                  }
+                  setState(() {});
+                  //print("saving Col:" + widget.errCol!.toString());
+                  db.saveToDB(widget.errCol!, value!);
+                  widget.attr!.decCol!.colValue = value;
+                },
+                isExpanded: false,
               ),
-              items: _decValues
-                  .map((e) => DropdownMenuItem(
-                        child: Text(e),
-                        value: e,
-                      ))
-                  .toList(),
-              onChanged: (String? value) async {
-                var db = Provider.of<DBProvider>(context, listen: false);
-                if (value == "Yes") {
-                  //print(dd2Val);
-                  if (dd2Val != "") {
-                    dd2Val = "";
-                    erCodValues = [];
-                    //print("I am runing when changing Yes decision");
-
-                    await db.saveToDB(widget.erCodCol!, "");
-                  }
-
-                  bringDD(widget.headerString!, "Yes");
-
-                  dd1Val = "Yes";
-                } else if (value == "No") {
-                  if (dd2Val != "") {
-                    //print("I am runing when changing No decision");
-                    dd2Val = "";
-                    erCodValues = [];
-
-                    await db.saveToDB(widget.erCodCol!, "");
-                  }
-
-                  bringDD(widget.headerString!, "No");
-                  dd1Val = "No";
-                }
-                setState(() {});
-                //print("saving Col:" + widget.errCol!.toString());
-                db.saveToDB(widget.errCol!, value!);
-              },
-              isExpanded: false,
             ),
           ),
         ),
@@ -579,6 +596,7 @@ class _CustBoxState extends State<CustBox> {
                 });
                 var db = Provider.of<DBProvider>(context, listen: false);
                 db.saveToDB(widget.erCodCol!, value!);
+                widget.attr!.errCode!.colValue = value;
               },
 
               isExpanded: true,
@@ -595,6 +613,7 @@ class _CustBoxState extends State<CustBox> {
                   if (value == false) {
                     var db = Provider.of<DBProvider>(context, listen: false);
                     db.saveToDB(widget.comCol!, _controller.text);
+                    widget.attr!.comments!.colValue = _controller.text;
                   }
                 },
                 child: TextFormField(
@@ -624,44 +643,81 @@ class _CustBoxState extends State<CustBox> {
 }
 
 class ListAttr extends StatelessWidget {
-  final List<Attribute>? lst;
-  const ListAttr({this.lst, Key? key}) : super(key: key);
+  final List<Attribute>? bckLst;
+  const ListAttr({this.bckLst, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<Attribute>? lst1;
+    List<Attribute>? lst2;
+    List<Attribute>? lst3;
+
+    var db = Provider.of<AttProvider>(context);
+
+    lst1 = List.from(db.showList1!.toList());
+
+    lst2 = List.from(db.showList2!.toList());
+
+    lst3 = List.from(db.showList3!.toList());
+
     return RawScrollbar(
       thumbColor: Colors.green,
       radius: const Radius.circular(20),
       thickness: 4,
-      child: ListView.builder(
-          itemCount: lst!.length,
-          itemBuilder: (BuildContext context, int index) {
-            return CustAttrCard(
-              attrHeader: lst![index].attrVal!.header,
-              defText: lst![index].attrVal!.colValue,
-              attrCol: lst![index].attrVal!.colNum,
-              decCol: lst![index].decCol!.colNum,
-              erCodCol: lst![index].errCode!.colNum,
-              comCol: lst![index].comments!.colNum,
-              comVal: lst![index].comments!.colValue,
-              decVal: lst![index].decCol!.colValue,
-              erCodVal: lst![index].errCode!.colValue,
-              attrHeader1: lst![index].opVal!.header ?? "",
-              defText1: (lst![index].opVal!.colValue != "NA")
-                  ? lst![index].opVal!.colValue
-                  : "",
-              attrHeader2: lst![index].opCom!.header ?? "",
-              defText2: (lst![index].opVal!.colValue != "NA")
-                  ? lst![index].opCom!.colValue
-                  : "",
-              req: lst![index].req,
-            );
-          }),
+      child: LstViewCard(
+          lst: (db.listNo == 1)
+              ? (lst1.isNotEmpty)
+                  ? lst1
+                  : bckLst
+              : (db.listNo == 2)
+                  ? lst2
+                  : (db.listNo == 3)
+                      ? lst3
+                      : []),
     );
   }
 }
 
+class LstViewCard extends StatelessWidget {
+  final List<Attribute>? lst;
+
+  const LstViewCard({
+    this.lst,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: lst!.length,
+        itemBuilder: (BuildContext context, int index) {
+          return CustAttrCard(
+            attr: lst![index],
+            attrHeader: lst![index].attrVal!.header,
+            defText: lst![index].attrVal!.colValue,
+            attrCol: lst![index].attrVal!.colNum,
+            decCol: lst![index].decCol!.colNum,
+            erCodCol: lst![index].errCode!.colNum,
+            comCol: lst![index].comments!.colNum,
+            comVal: lst![index].comments!.colValue,
+            decVal: lst![index].decCol!.colValue,
+            erCodVal: lst![index].errCode!.colValue,
+            attrHeader1: lst![index].opVal!.header ?? "",
+            defText1: (lst![index].opVal!.colValue != "NA")
+                ? lst![index].opVal!.colValue
+                : "",
+            attrHeader2: lst![index].opCom!.header ?? "",
+            defText2: (lst![index].opVal!.colValue != "NA")
+                ? lst![index].opCom!.colValue
+                : "",
+            req: lst![index].req,
+          );
+        });
+  }
+}
+
 class CustAttrCard extends StatelessWidget {
+  final Attribute? attr;
   final String? attrHeader;
   final String? defText;
   final int? attrCol;
@@ -680,6 +736,7 @@ class CustAttrCard extends StatelessWidget {
 
   const CustAttrCard(
       {this.attrHeader,
+      this.attr,
       this.defText,
       this.attrHeader1,
       this.defText1,
@@ -716,9 +773,8 @@ class CustAttrCard extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              var be = Provider.of<PTProvider>(context, listen: false);
-              be.addToAttrWrds(_controller.text + "|" + _controller1.text);
-              //print(_controller.text + "|" + _controller1.text);
+              var atCol = Provider.of<PTProvider>(context, listen: false);
+              atCol.addToAttrWrds(_controller.text + "|" + _controller1.text);
             },
             child: Card(
               color: reqCol,
@@ -744,6 +800,7 @@ class CustAttrCard extends StatelessWidget {
                           //print("Save : " + _controller.text);
                           //print("Save : " + attrCol.toString());
                           db.saveToDB(attrCol!, _controller.text);
+                          attr!.attrVal!.colValue = _controller.text;
                         }
                       },
                       child: TextFormField(
@@ -764,6 +821,8 @@ class CustAttrCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 CustBox(
+                  attr: attr,
+                  key: key,
                   headerString: attrHeader,
                   errCol: decCol,
                   erCodCol: erCodCol,
@@ -831,7 +890,9 @@ class RowChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var prov = Provider.of<AttProvider>(context, listen: true);
+
     int colNo = prov.listNo;
+
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -842,7 +903,7 @@ class RowChips extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  prov.changeList(dItem!.lstAttrs1, 1);
+                  prov.changeList1(dItem!.lstAttrs1, 1);
                 },
                 child: Chip(
                   backgroundColor: (colNo != 1) ? Colors.black54 : accentColor,
@@ -855,7 +916,7 @@ class RowChips extends StatelessWidget {
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: () {
-                  prov.changeList(dItem!.lstAttrs2, 2);
+                  prov.changeList2(dItem!.lstAttrs2, 2);
                   //print("I am called");
                 },
                 child: Chip(
@@ -869,7 +930,7 @@ class RowChips extends StatelessWidget {
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: () {
-                  prov.changeList(dItem!.lstAttrs3, 3);
+                  prov.changeList3(dItem!.lstAttrs3, 3);
                 },
                 child: Chip(
                   backgroundColor: (colNo != 3) ? Colors.black54 : accentColor,

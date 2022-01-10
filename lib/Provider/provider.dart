@@ -1,7 +1,9 @@
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wm_workbench/Services/factory_display.dart';
+import 'package:wm_workbench/constants.dart';
 import 'package:wm_workbench/main.dart';
 import 'package:wm_workbench/models/item_display.dart';
 import 'package:wm_workbench/models/maindb.dart';
@@ -55,7 +57,7 @@ class ProviderOne extends ChangeNotifier {
 }
 
 class PTProvider extends ChangeNotifier {
-  int? _ptCnt = 0;
+  int? _ptCnt = 1;
   List<String> _attrWrds = [];
 
   List<String> get attrWrds {
@@ -122,11 +124,30 @@ class AttProvider extends ChangeNotifier {
   //Attribute change
   int _listNo = 1;
   int get listNo => _listNo;
-  List<Attribute>? _showList = [];
-  List<Attribute>? get showList => _showList;
-  changeList(List<Attribute>? val, int val1) {
-    _showList = List.from(val!.toList());
+  var db = DBProvider();
+  List<Attribute>? _showList1 = [];
+  List<Attribute>? get showList1 => _showList1;
+  changeList1(List<Attribute>? val, int val1) {
+    _showList1 = [];
+    _showList1 = List.from(val!.toList());
+    _listNo = val1;
+    notifyListeners();
+  }
 
+  List<Attribute>? _showList2 = [];
+  List<Attribute>? get showList2 => _showList2;
+  changeList2(List<Attribute>? val, int val1) {
+    _showList2 = [];
+    _showList2 = List.from(val!.toList());
+    _listNo = val1;
+    notifyListeners();
+  }
+
+  List<Attribute>? _showList3 = [];
+  List<Attribute>? get showList3 => _showList3;
+  changeList3(List<Attribute>? val, int val1) {
+    _showList3 = [];
+    _showList3 = List.from(val!.toList());
     _listNo = val1;
     notifyListeners();
   }
@@ -142,11 +163,47 @@ class DBProvider extends ChangeNotifier {
   List<ItemDisplay> _itmDisp = [];
   Display _item = Display();
   Display get item => _item;
-  bool _dataLoading = true;
-  bool get dataLoading => _dataLoading;
+  // var ky = configDB.get("actID");
+  // pullItem(flMap!, ky);
+
+  bool _dataLoading = false;
+  bool get dataLoading {
+    if (_dataLoading == false) {
+      if (mainDB.keys.isNotEmpty) {
+        _dataLoading = true;
+      } else if (_dataLoading == true) {
+        _dataLoading = true;
+      }
+    }
+    return _dataLoading;
+  }
+
+  Map<dynamic, MainDB>? _flMap = Map();
+  Map<dynamic, MainDB>? get flMap => _flMap;
+
+  changeFlMap(Map<dynamic, MainDB> dbMap) {
+    _flMap = dbMap;
+    //notifyListeners();
+  }
 
   String _rwNum = "";
   String get rwNum => _rwNum;
+
+  changeDispItem(Display dItem) {
+    _item = dItem;
+    print(" I am setting the display item");
+    //changeDpItem() {}
+
+    //notifyListeners();
+  }
+
+  // changeDpItem(MyColumn col, String? val) {
+  //   Display? itm = item;
+
+  //   item.lstAttrs3![0].attrVal!.colValue = val!;
+
+  //   notifyListeners();
+  // }
 
   chagenRwNum(String rwNum) {
     _rwNum = rwNum;
@@ -182,20 +239,30 @@ class DBProvider extends ChangeNotifier {
   }
 
 //pull item from db
-  Future<Display> pullItem(String? ky) async {
+  void pullItem(
+      BuildContext context, Map<dynamic, MainDB> mainItem, String? ky) async {
     List<String>? lstAttr;
     List<String>? hdAttr;
 
+    var db = Provider.of<DBProvider>(context, listen: false);
+
     try {
-      print("pullitem method is called");
-      print(mainDB.isOpen);
-      print(mainDB.keys.length);
+      //var db = DBProvider();
+      // print("pullitem method is called");
+      // print(mainDB.isOpen);
+      // print(mainDB.keys.length);
+      // print(ky);
+      // print(ky);
+      // print(mainDB.get(ky)!.itemDetails!.length);
+      // print(mainDB.get("Item ID")!.itemDetails!.length);
       // mainDB.close();
       //mainDB = await Hive.openBox<MainDB>('mainDB');
-      MainDB? itemFrmDB = await mainDB.get(ky);
-      MainDB? headFrmDB = await mainDB.get("Item ID");
-      lstAttr = itemFrmDB!.itemDetails;
-      hdAttr = headFrmDB!.itemDetails;
+      MainDB? itemFrmDB = db.flMap![ky];
+      MainDB? headFrmDB = db.flMap!["Item ID"];
+      print(itemFrmDB!.itemDetails);
+      print(headFrmDB!.itemDetails);
+      lstAttr = itemFrmDB.itemDetails;
+      hdAttr = headFrmDB.itemDetails;
       //print(lstAttr);
       //print(hdAttr);
       //return cnvLsttoDisp(lstAttr, hdAttr, ky);
@@ -205,7 +272,7 @@ class DBProvider extends ChangeNotifier {
       print(e);
     }
 
-    return await cnvLsttoDisp(lstAttr, hdAttr, ky);
+    return cnvLsttoDisp(context, lstAttr, hdAttr, ky);
   }
 
   //Future<List<ItemDisplay>>? get itmDisp => getitmDisp();
@@ -213,6 +280,7 @@ class DBProvider extends ChangeNotifier {
   Future<List<ItemDisplay>>? getitmDisp() async {
     List<ItemDisplay> retList = [];
     final stopwatch = Stopwatch()..start();
+
     try {
       Map<dynamic, MainDB> lstfromDB = mainDB.toMap();
       print('ln173 executed in ${stopwatch.elapsed}');
@@ -236,9 +304,9 @@ class DBProvider extends ChangeNotifier {
         int i = 1;
         _cntStatus = [0, 0, 0];
         lstfromDB.forEach((key, value) {
-          print("status from getitmDisp");
+          //print("status from getitmDisp");
 
-          print(_cntStatus);
+          //print(_cntStatus);
           if (value.itemDetails![stCol] == "Completed") {
             _cntStatus[0] = _cntStatus[0] + 1;
           } else if (value.itemDetails![stCol] == "In Progress") {
@@ -299,6 +367,8 @@ class DBProvider extends ChangeNotifier {
     configDB.put("actID", frmExcel[1][idCol]!.value.toString());
     configDB.put("pt", frmExcel[1][ptCol]!.value.toString());
     configDB.put("stCol", stCol.toString());
+    configDB.put("ptCol", ptCol.toString());
+    configDB.put("idCol", idCol.toString());
     for (var element in frmExcel) {
       MainDB ls = MainDB();
       ls.itemDetails = [];
@@ -329,7 +399,7 @@ class DBProvider extends ChangeNotifier {
 class BackEndData with ChangeNotifier {
   int _clkInd = 0;
   List<String> _lstWrds = [];
-  List<String> _attrWrds = [];
+  //List<String> _attrWrds = [];
 
   int get clkInd => _clkInd;
   List<String> get lstWrds {

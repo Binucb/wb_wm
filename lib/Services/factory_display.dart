@@ -1,11 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wm_workbench/Provider/provider.dart';
 import 'package:wm_workbench/constants.dart';
 import 'package:wm_workbench/models/pt.dart';
 import 'package:wm_workbench/models/wb_model.dart';
 
 import '../main.dart';
 
-Future<Display> cnvLsttoDisp(
-    List<String>? lstI, List<String>? lstrH, String? ky) async {
+void cnvLsttoDisp(BuildContext cntxt, List<String>? lstI, List<String>? lstrH,
+    String? ky) async {
   //print(lstI);
   List<String> headers = [];
   List<MyColumn> colist = [];
@@ -26,17 +29,18 @@ Future<Display> cnvLsttoDisp(
     // print(element);
     i++;
   }
-  //print("finished chaning it to lower case & added the columns");
+  print("finished chaning it to lower case & added the columns");
   int idCol = headers.indexOf("item id");
   int ptCol = headers.indexOf("product type");
   int pnCol = headers.indexOf("product name");
-  //print(ptCol);
+  print(ptCol);
   String pt = lstI![ptCol];
+
   PtDB? attrNeeded = ptDB.get(pt);
-  //print(attrNeeded!.required);
+  print(attrNeeded!.required);
 
   List<Attribute> req =
-      retAttr(attrNeeded!.required, Requirement.required, colist, lstrH);
+      retAttr(attrNeeded.required, Requirement.required, colist, lstrH);
   List<Attribute> opt =
       retAttr(attrNeeded.optional, Requirement.optional, colist, lstrH);
   late List<Attribute> con;
@@ -113,7 +117,8 @@ Future<Display> cnvLsttoDisp(
   disp.lstAttrs2 = lst2;
   disp.lstAttrs3 = lst3;
 
-  return disp;
+  var db = Provider.of<DBProvider>(cntxt, listen: false);
+  db.changeDispItem(disp);
 }
 
 List<Attribute> retAttr(String? lst, Requirement? knd, List<MyColumn>? colist,
