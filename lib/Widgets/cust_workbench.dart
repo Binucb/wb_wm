@@ -22,11 +22,14 @@ class MyCustWBScreen extends StatelessWidget {
     var prov = Provider.of<AttProvider>(context, listen: true);
     var dProv = Provider.of<DBProvider>(context, listen: true);
     Display? dItem = dProv.item;
+    // print("++++++++++++++++++");
+    // print(dItem);
+    // print("MyCustWBScreen item is building");
+    // print(dItem.ld!.attrVal!.colValue);
+    // print(dItem.pn);
 
-    print("MyCustWBScreen item is building");
-    // print(dItem!.ld!.attrVal!.colValue);
-    // print(dItem!.ld!.decCol!.colValue);
-    // print(dItem!.ld!.decCol!.colNum);
+    //print(dItem.ld!.decCol!.colValue);
+    //print(dItem.ld!.decCol!.colNum);
 
     double ht = MediaQuery.of(context).size.height;
     double wt = MediaQuery.of(context).size.width;
@@ -107,30 +110,35 @@ class MyCustWBScreen extends StatelessWidget {
                                             headerWidget(
                                                 dItem.sd!.attrVal!.header!),
                                             const SizedBox(height: 0.6),
-                                            EasyRichText(
-                                              dItem.sd!.attrVal!.colValue,
-                                              selectable: true,
-                                              caseSensitive: false,
-                                              patternList: [
-                                                EasyRichTextPattern(
-                                                    matchWordBoundaries: false,
-                                                    targetString: context
-                                                        .watch<BackEndData>()
-                                                        .lstWrds,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        backgroundColor:
-                                                            Colors.blue)),
-                                                EasyRichTextPattern(
-                                                    matchWordBoundaries: false,
-                                                    targetString: context
-                                                        .watch<PTProvider>()
-                                                        .attrWrds,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        backgroundColor:
-                                                            Colors.green)),
-                                              ],
+                                            SizedBox(
+                                              height: 250,
+                                              child: EasyRichText(
+                                                dItem.sd!.attrVal!.colValue,
+                                                selectable: true,
+                                                caseSensitive: false,
+                                                patternList: [
+                                                  EasyRichTextPattern(
+                                                      matchWordBoundaries:
+                                                          false,
+                                                      targetString: context
+                                                          .watch<BackEndData>()
+                                                          .lstWrds,
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          backgroundColor:
+                                                              Colors.blue)),
+                                                  EasyRichTextPattern(
+                                                      matchWordBoundaries:
+                                                          false,
+                                                      targetString: context
+                                                          .watch<PTProvider>()
+                                                          .attrWrds,
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          backgroundColor:
+                                                              Colors.green)),
+                                                ],
+                                              ),
                                             ), // SelectableText(
                                             //     dItem!.sd!.attrVal!.colValue),
                                             Expanded(
@@ -167,30 +175,35 @@ class MyCustWBScreen extends StatelessWidget {
                                             headerWidget(
                                                 dItem.ld!.attrVal!.header!),
                                             const SizedBox(height: 0.6),
-                                            EasyRichText(
-                                              dItem.ld!.attrVal!.colValue,
-                                              selectable: true,
-                                              caseSensitive: false,
-                                              patternList: [
-                                                EasyRichTextPattern(
-                                                    matchWordBoundaries: false,
-                                                    targetString: context
-                                                        .watch<BackEndData>()
-                                                        .lstWrds,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        backgroundColor:
-                                                            Colors.blue)),
-                                                EasyRichTextPattern(
-                                                    matchWordBoundaries: false,
-                                                    targetString: context
-                                                        .watch<PTProvider>()
-                                                        .attrWrds,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        backgroundColor:
-                                                            Colors.green)),
-                                              ],
+                                            SizedBox(
+                                              height: 250,
+                                              child: EasyRichText(
+                                                dItem.ld!.attrVal!.colValue,
+                                                selectable: true,
+                                                caseSensitive: false,
+                                                patternList: [
+                                                  EasyRichTextPattern(
+                                                      matchWordBoundaries:
+                                                          false,
+                                                      targetString: context
+                                                          .watch<BackEndData>()
+                                                          .lstWrds,
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          backgroundColor:
+                                                              Colors.blue)),
+                                                  EasyRichTextPattern(
+                                                      matchWordBoundaries:
+                                                          false,
+                                                      targetString: context
+                                                          .watch<PTProvider>()
+                                                          .attrWrds,
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          backgroundColor:
+                                                              Colors.green)),
+                                                ],
+                                              ),
                                             ),
 
                                             // SelectableText(
@@ -366,34 +379,36 @@ Widget lstImages(List<ImageURL> imgUrl) {
       itemCount: imgUrl.length,
       itemBuilder: (BuildContext context, int index) {
         return Card(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  imgUrl[index].label!,
-                  style: const TextStyle(fontSize: 12, color: Colors.black),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: true,
-                      context: context,
-                      builder: (ctx) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.network(imgUrl[index].imageURL!),
-                          ));
-                },
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.20,
-                  child: Image.network(
-                    imgUrl[index].imageURL!,
-                    fit: BoxFit.contain,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    imgUrl[index].label!,
+                    style: const TextStyle(fontSize: 12, color: Colors.black),
                   ),
                 ),
-              ),
-            ],
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                        barrierDismissible: true,
+                        context: context,
+                        builder: (ctx) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.network(imgUrl[index].imageURL),
+                            ));
+                  },
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.20,
+                    child: Image.network(
+                      imgUrl[index].imageURL,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       });
@@ -692,26 +707,26 @@ class LstViewCard extends StatelessWidget {
         itemCount: lst!.length,
         itemBuilder: (BuildContext context, int index) {
           return CustAttrCard(
-            attr: lst![index],
-            attrHeader: lst![index].attrVal!.header,
-            defText: lst![index].attrVal!.colValue,
-            attrCol: lst![index].attrVal!.colNum,
-            decCol: lst![index].decCol!.colNum,
-            erCodCol: lst![index].errCode!.colNum,
-            comCol: lst![index].comments!.colNum,
-            comVal: lst![index].comments!.colValue,
-            decVal: lst![index].decCol!.colValue,
-            erCodVal: lst![index].errCode!.colValue,
-            attrHeader1: lst![index].opVal!.header ?? "",
-            defText1: (lst![index].opVal!.colValue != "NA")
-                ? lst![index].opVal!.colValue
-                : "",
-            attrHeader2: lst![index].opCom!.header ?? "",
-            defText2: (lst![index].opVal!.colValue != "NA")
-                ? lst![index].opCom!.colValue
-                : "",
-            req: lst![index].req,
-          );
+              attr: lst![index],
+              attrHeader: lst![index].attrVal!.header,
+              defText: lst![index].attrVal!.colValue,
+              attrCol: lst![index].attrVal!.colNum,
+              decCol: lst![index].decCol!.colNum,
+              erCodCol: lst![index].errCode!.colNum,
+              comCol: lst![index].comments!.colNum,
+              comVal: lst![index].comments!.colValue,
+              decVal: lst![index].decCol!.colValue,
+              erCodVal: lst![index].errCode!.colValue,
+              attrHeader1: lst![index].opVal!.header ?? "",
+              defText1: (lst![index].opVal!.colValue != "NA")
+                  ? lst![index].opVal!.colValue
+                  : "",
+              attrHeader2: lst![index].opCom!.header ?? "",
+              defText2: (lst![index].opVal!.colValue != "NA")
+                  ? lst![index].opCom!.colValue
+                  : "",
+              req: lst![index].req,
+              cfLst: lst![index].cfCol!.colValue);
         });
   }
 }
@@ -727,6 +742,7 @@ class CustAttrCard extends StatelessWidget {
   final String? erCodVal;
   final int? comCol;
   final String? comVal;
+  final String? cfLst;
 
   final String? attrHeader1;
   final String? defText1;
@@ -750,6 +766,7 @@ class CustAttrCard extends StatelessWidget {
       this.decVal,
       this.erCodVal,
       this.comVal,
+      this.cfLst,
       Key? key})
       : super(key: key);
 
@@ -766,20 +783,42 @@ class CustAttrCard extends StatelessWidget {
         ? Colors.green
         : (req == Requirement.optional)
             ? Colors.yellow
-            : Colors.purple;
+            : (req == Requirement.conditional)
+                ? Colors.purple
+                : Colors.purple;
+    List<String>? txtLst = defText1!.split("|");
+    List<String>? hgList = [];
+    List<String>? lwList = [];
+    int coli = 0;
+    List<String>? cfVal = cfLst!.split("|");
+
+    for (var wrd in cfVal) {
+      if (wrd == "High") {
+        hgList.add(txtLst[coli]);
+        coli++;
+      } else if (wrd == "Low") {
+        lwList.add(txtLst[coli]);
+        coli++;
+      }
+    }
 
     return Card(
       child: Column(
         children: [
           GestureDetector(
             onTap: () {
+              String txtWrd1 =
+                  (_controller.text != "") ? _controller.text + "|" : "";
+              String txtWrd2 =
+                  (_controller1.text != "") ? _controller1.text : "";
+
               var atCol = Provider.of<PTProvider>(context, listen: false);
-              atCol.addToAttrWrds(_controller.text + "|" + _controller1.text);
+              atCol.addToAttrWrds(txtWrd1 + txtWrd2);
             },
             child: Card(
               color: reqCol,
               child: SizedBox(
-                height: 3,
+                height: 4,
                 width: MediaQuery.of(context).size.width * 0.3,
               ),
             ),
@@ -831,26 +870,72 @@ class CustAttrCard extends StatelessWidget {
                   erCodVal: erCodVal,
                   comVal: comVal,
                 ),
+                // const SizedBox(height: 10),
+                // (attrHeader1 != "")
+                //     ? Padding(
+                //         padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                //         child: SizedBox(
+                //           width: (MediaQuery.of(context).size.width * 0.3),
+                //           child: TextFormField(
+                //             style: Theme.of(context).textTheme.bodyText2,
+                //             controller: _controller1,
+                //             decoration: InputDecoration(
+                //               isDense: true,
+                //               contentPadding:
+                //                   const EdgeInsets.fromLTRB(10, 15, 10, 10),
+                //               labelText: attrHeader1,
+                //               labelStyle: Theme.of(context).textTheme.bodyText1,
+                //               border: const OutlineInputBorder(),
+                //             ),
+                //           ),
+                //         ),
+                //       )
+                //     : const SizedBox(),
                 const SizedBox(height: 10),
                 (attrHeader1 != "")
                     ? Padding(
                         padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                        child: SizedBox(
-                          width: (MediaQuery.of(context).size.width * 0.3),
-                          child: TextFormField(
-                            style: Theme.of(context).textTheme.bodyText2,
-                            controller: _controller1,
+                        child: Container(
+                          child: InputDecorator(
                             decoration: InputDecoration(
-                              isDense: true,
                               contentPadding:
-                                  const EdgeInsets.fromLTRB(10, 15, 10, 10),
+                                  const EdgeInsets.fromLTRB(10, 12, 10, 8),
                               labelText: attrHeader1,
                               labelStyle: Theme.of(context).textTheme.bodyText1,
-                              border: const OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            child: SizedBox(
+                              width: (MediaQuery.of(context).size.width * 0.3),
+                              child: EasyRichText(
+                                defText1!,
+                                selectable: true,
+                                caseSensitive: false,
+                                patternList: [
+                                  EasyRichTextPattern(
+                                      matchWordBoundaries: false,
+                                      targetString: hgList,
+                                      // context
+                                      //     .watch<BackEndData>()
+                                      //     .lstWrds,
+                                      style:
+                                          const TextStyle(color: Colors.green)),
+                                  // backgroundColor: Colors.blue)),
+                                  EasyRichTextPattern(
+                                      matchWordBoundaries: false,
+                                      targetString: lwList,
+                                      // context
+                                      //     .watch<PTProvider>()
+                                      //     .attrWrds,
+                                      style:
+                                          const TextStyle(color: Colors.red)),
+                                  //backgroundColor: Colors.green)),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      )
+                        ))
                     : const SizedBox(),
                 const SizedBox(height: 10),
                 (attrHeader2 != "")
@@ -883,12 +968,27 @@ class CustAttrCard extends StatelessWidget {
   }
 }
 
-class RowChips extends StatelessWidget {
+class RowChips extends StatefulWidget {
   final Display? dItem;
   const RowChips({this.dItem, Key? key}) : super(key: key);
 
   @override
+  State<RowChips> createState() => _RowChipsState();
+}
+
+class _RowChipsState extends State<RowChips> {
+  var stopwatch = Stopwatch()..start();
+
+  @override
+  void deactivate() {
+    // TODO: implement dispose
+    print("From Dashboard: ${stopwatch.elapsed}");
+    super.deactivate();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print("From BuildMethod: ${stopwatch.elapsed}");
     var prov = Provider.of<AttProvider>(context, listen: true);
 
     int colNo = prov.listNo;
@@ -903,7 +1003,7 @@ class RowChips extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  prov.changeList1(dItem!.lstAttrs1, 1);
+                  prov.changeList1(widget.dItem!.lstAttrs1, 1);
                 },
                 child: Chip(
                   backgroundColor: (colNo != 1) ? Colors.black54 : accentColor,
@@ -916,7 +1016,7 @@ class RowChips extends StatelessWidget {
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: () {
-                  prov.changeList2(dItem!.lstAttrs2, 2);
+                  prov.changeList2(widget.dItem!.lstAttrs2, 2);
                   //print("I am called");
                 },
                 child: Chip(
@@ -930,7 +1030,7 @@ class RowChips extends StatelessWidget {
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: () {
-                  prov.changeList3(dItem!.lstAttrs3, 3);
+                  prov.changeList3(widget.dItem!.lstAttrs3, 3);
                 },
                 child: Chip(
                   backgroundColor: (colNo != 3) ? Colors.black54 : accentColor,
@@ -950,7 +1050,7 @@ class RowChips extends StatelessWidget {
                     .saveToDB(stCol, "Completed");
                 await Provider.of<DBProvider>(context, listen: false)
                     .changedl(true);
-
+                print(stopwatch.elapsed);
                 customalert(
                     context: context,
                     title: "Save Item",
@@ -973,9 +1073,9 @@ class RowChips extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Req Attr: ${dItem!.reqCount.toString()}|"),
-              Text("Opt Attr: ${dItem!.optCount.toString()}|"),
-              Text("Cond Attr: ${dItem!.conCount.toString()}"),
+              Text("Req Attr: ${widget.dItem!.reqCount.toString()}|"),
+              Text("Opt Attr: ${widget.dItem!.optCount.toString()}|"),
+              Text("Cond Attr: ${widget.dItem!.conCount.toString()}"),
             ],
           )
         ],

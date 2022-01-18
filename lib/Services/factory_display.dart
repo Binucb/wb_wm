@@ -4,15 +4,16 @@ import 'package:wm_workbench/Provider/provider.dart';
 import 'package:wm_workbench/constants.dart';
 import 'package:wm_workbench/models/pt.dart';
 import 'package:wm_workbench/models/wb_model.dart';
+import 'dart:convert' show utf8;
 
 import '../main.dart';
 
-void cnvLsttoDisp(BuildContext cntxt, List<String>? lstI, List<String>? lstrH,
-    String? ky) async {
+void cnvLsttoDisp(
+    BuildContext cntxt, List<String>? lstI, List<String>? lstrH, String? ky) {
   //print(lstI);
   List<String> headers = [];
   List<MyColumn> colist = [];
-  Display disp = Display();
+  Display? disp = Display();
 
   int i = 1;
   for (var element in lstrH!) {
@@ -29,18 +30,18 @@ void cnvLsttoDisp(BuildContext cntxt, List<String>? lstI, List<String>? lstrH,
     // print(element);
     i++;
   }
-  print("finished chaning it to lower case & added the columns");
+  //print("finished chaning it to lower case & added the columns");
   int idCol = headers.indexOf("item id");
   int ptCol = headers.indexOf("product type");
   int pnCol = headers.indexOf("product name");
-  print(ptCol);
+  //print(ptCol);
   String pt = lstI![ptCol];
 
   PtDB? attrNeeded = ptDB.get(pt);
-  print(attrNeeded!.required);
+  //print(attrNeeded!.required);
 
   List<Attribute> req =
-      retAttr(attrNeeded.required, Requirement.required, colist, lstrH);
+      retAttr(attrNeeded!.required, Requirement.required, colist, lstrH);
   List<Attribute> opt =
       retAttr(attrNeeded.optional, Requirement.optional, colist, lstrH);
   late List<Attribute> con;
@@ -62,7 +63,7 @@ void cnvLsttoDisp(BuildContext cntxt, List<String>? lstI, List<String>? lstrH,
   List<Attribute>? lst3 = [];
 
   for (Attribute attr in cons) {
-    //(attr.attrVal!.header);
+    //print(attr.attrVal!.header);
     disp.rwNum = ky;
     disp.itemID = lstI[idCol];
     disp.pt = pt;
@@ -70,11 +71,11 @@ void cnvLsttoDisp(BuildContext cntxt, List<String>? lstI, List<String>? lstrH,
 
     if (attr.attrVal!.header!.toLowerCase() == "product short description") {
       disp.sd = attr;
-    }
-    if (attr.attrVal!.header!.toLowerCase() == "product long description") {
+      //print(disp.sd!.attrVal!.colValue);
+    } else if (attr.attrVal!.header!.toLowerCase() ==
+        "product long description") {
       disp.ld = attr;
-    }
-    if (attr.attrVal!.header!.toLowerCase().contains("main image url")) {
+    } else if (attr.attrVal!.header!.toLowerCase().contains("main image url")) {
       List<ImageURL> lst = [];
       ImageURL imgurl = ImageURL();
 
@@ -84,19 +85,29 @@ void cnvLsttoDisp(BuildContext cntxt, List<String>? lstI, List<String>? lstrH,
       lst.add(imgurl);
       disp.lstImages = lst;
       lst3.add(attr);
-    }
-    if (attr.attrVal!.header!.toLowerCase().contains("secondary image url")) {
+    } else if (attr.attrVal!.header!
+        .toLowerCase()
+        .contains("secondary image url")) {
       int i = 1;
+
+      List<ImageURL>? imgList = <ImageURL>[];
+
       for (var img in fetchURL(attr.attrVal!.colValue)) {
-        disp.lstImages!
-            .add(ImageURL(label: "Secondary Image - $i", imageURL: img));
+        //print(img);
+        ImageURL? imgurl = ImageURL();
+        imgurl.label = "Secondary Image - $i";
+        imgurl.imageURL = img;
+
+        imgList.add(imgurl);
+        //print(imgList[i - 1].imageURL);
+
         i++;
       }
-      lst3.add(attr);
-    }
 
-    if (attr.opCom != null) {
-      // print(attr.opCom!.colValue);
+      disp.lstImages!.addAll(imgList);
+      lst3.add(attr);
+    } else if (attr.opCom!.colValue != "NA") {
+      //print("opCom not null: ${attr.opCom!.colValue}");
       if (attr.opCom!.colValue.contains("Content Match")) {
         lst1.add(attr);
       }
@@ -110,6 +121,9 @@ void cnvLsttoDisp(BuildContext cntxt, List<String>? lstI, List<String>? lstrH,
           attr.opCom!.colValue.contains("Not Able to Validate")) {
         lst3.add(attr);
       }
+    } else if (attr.opCom!.colValue == "NA") {
+      //print("else: ${attr.opCom!.colValue}");
+      lst3.add(attr);
     }
   }
 
@@ -134,17 +148,23 @@ List<Attribute> retAttr(String? lst, Requirement? knd, List<MyColumn>? colist,
 
     attr.err = [];
     if (colist[col + 1].header!.toLowerCase().contains("op_")) {
+      //print(col);
       attr.opVal = colist[col + 1];
       attr.decCol = colist[col + 2];
       attr.errCode = colist[col + 4];
       attr.comments = colist[col + 6];
       attr.opCom = colist[col + 7];
+      attr.cfCol = colist[col + 8];
+      //print("CFCol: ${attr.cfCol!.colNum}");
     } else {
+      // print(col);
       attr.decCol = colist[col + 1];
       attr.errCode = colist[col + 2];
       attr.comments = colist[col + 3];
       attr.opVal = MyColumn(colValue: "NA");
       attr.opCom = MyColumn(colValue: "NA");
+      attr.cfCol = MyColumn(colValue: "NA");
+      //print("CFCOL:${attr.cfCol!.colNum}");
     }
     //print(retList.length);
     retList.add(attr);

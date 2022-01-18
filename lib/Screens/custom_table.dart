@@ -67,9 +67,9 @@ List<DataRow> _createRows(BuildContext context, List<MainDB>? lst, int? idCol,
         DataCell(SelectableText(element.itemDetails![idCol]), onTap: () {
           db.chagenRwNum(element.itemDetails![idCol]);
           configDB.put("actID", element.itemDetails![idCol]);
-          print("=============");
-          print(db.flMap!.length);
-          print(element.itemDetails![idCol]);
+          // print("=============");
+          // print(db.flMap!.length);
+          // print(element.itemDetails![idCol]);
           db.pullItem(context, db.flMap!, element.itemDetails![idCol]);
           int? stCol = int.parse(configDB.get("stCol")!) + 1;
           print("Status:" + stCol.toString());

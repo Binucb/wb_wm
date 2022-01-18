@@ -60,6 +60,10 @@ void upload(BuildContext context) async {
         .cell(CellIndex.indexByColumnRow(
             rowIndex: 0, columnIndex: excel.tables["Sheet1"]!.maxCols))
         .value = "Status";
+    excel.tables["Sheet1"]!
+        .cell(CellIndex.indexByColumnRow(
+            rowIndex: 0, columnIndex: excel.tables["Sheet1"]!.maxCols))
+        .value = "AHT";
     var _loading = Provider.of<DBProvider>(context, listen: false);
     await _loading.addtoBox(excel.tables["Sheet1"]!.rows);
 

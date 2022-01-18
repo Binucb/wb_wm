@@ -191,10 +191,11 @@ class DBProvider extends ChangeNotifier {
 
   changeDispItem(Display dItem) {
     _item = dItem;
+    print("++++++++");
     print(" I am setting the display item");
     //changeDpItem() {}
 
-    //notifyListeners();
+    notifyListeners();
   }
 
   // changeDpItem(MyColumn col, String? val) {
@@ -257,12 +258,14 @@ class DBProvider extends ChangeNotifier {
       // print(mainDB.get("Item ID")!.itemDetails!.length);
       // mainDB.close();
       //mainDB = await Hive.openBox<MainDB>('mainDB');
+      // print("+++++++++++++++");
+      // print("Loading based on PT");
       MainDB? itemFrmDB = db.flMap![ky];
       MainDB? headFrmDB = db.flMap!["Item ID"];
-      print(itemFrmDB!.itemDetails);
-      print(headFrmDB!.itemDetails);
-      lstAttr = itemFrmDB.itemDetails;
-      hdAttr = headFrmDB.itemDetails;
+      // print(itemFrmDB!.itemDetails);
+      // print(headFrmDB!.itemDetails);
+      lstAttr = itemFrmDB!.itemDetails;
+      hdAttr = headFrmDB!.itemDetails;
       //print(lstAttr);
       //print(hdAttr);
       //return cnvLsttoDisp(lstAttr, hdAttr, ky);
@@ -273,6 +276,8 @@ class DBProvider extends ChangeNotifier {
     }
 
     return cnvLsttoDisp(context, lstAttr, hdAttr, ky);
+
+    //changeDispItem(item);
   }
 
   //Future<List<ItemDisplay>>? get itmDisp => getitmDisp();
@@ -363,12 +368,14 @@ class DBProvider extends ChangeNotifier {
     int idCol = hdrList.indexOf("item id");
     int ptCol = hdrList.indexOf("product type");
     int stCol = hdrList.indexOf("status");
+    int tmCol = hdrList.indexOf("aht");
     //print(idCol);
     configDB.put("actID", frmExcel[1][idCol]!.value.toString());
     configDB.put("pt", frmExcel[1][ptCol]!.value.toString());
     configDB.put("stCol", stCol.toString());
     configDB.put("ptCol", ptCol.toString());
     configDB.put("idCol", idCol.toString());
+    configDB.put("tmCol", tmCol.toString());
     for (var element in frmExcel) {
       MainDB ls = MainDB();
       ls.itemDetails = [];

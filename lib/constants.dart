@@ -10,6 +10,7 @@ List<String> fetchURL(String text) {
   for (var match in matches) {
     urlList.add(text.substring(match.start, match.end));
   }
+  //print(urlList);
 
   return urlList;
 }

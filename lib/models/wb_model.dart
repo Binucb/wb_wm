@@ -34,8 +34,8 @@ class Display {
 
 class ImageURL {
   String? label;
-  String? imageURL;
-  ImageURL({this.label, this.imageURL});
+  String imageURL;
+  ImageURL({this.label, this.imageURL = ""});
 }
 
 class Attribute {
@@ -45,6 +45,7 @@ class Attribute {
   MyColumn? comments;
   MyColumn? opVal;
   MyColumn? opCom;
+  MyColumn? cfCol;
   Requirement? req;
   List<String>? err;
 
@@ -56,6 +57,7 @@ class Attribute {
       this.opVal,
       this.opCom,
       this.req,
+      this.cfCol,
       this.err});
 }
 
