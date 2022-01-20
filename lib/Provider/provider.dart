@@ -216,6 +216,36 @@ class DBProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+//time
+  void updateTime(String? tm) {
+    var ahtCol = configDB.get("tmCol");
+
+    var actID = configDB.get("actID");
+
+    MainDB? lst = mainDB.get(actID);
+
+    String? otm = lst!.itemDetails![int.parse(ahtCol!)];
+
+    saveTimeinDB(int.parse(ahtCol) + 1, add2times(t1: tm, t2: otm));
+  }
+
+//saveTimeinDB
+  saveTimeinDB(int colNum, String val) {
+    MainDB mDB = MainDB();
+    mDB.itemDetails = [];
+    mDB.rwNm = 1;
+
+    var actID = configDB.get("actID");
+
+    MainDB? lst = mainDB.get(actID);
+    mDB.itemDetails = lst!.itemDetails;
+    mDB.itemDetails![colNum - 1] = val;
+
+    //print(mDB.itemDetails![int.parse(stCol!) - 1]);
+
+    mainDB.put(actID, mDB);
+  }
+
 //Save to DB
   saveToDB(int colNum, String val) {
     MainDB mDB = MainDB();
@@ -391,6 +421,10 @@ class DBProvider extends ChangeNotifier {
           ls.rwNm = i;
         }
       }
+      if (ls.itemDetails!.last != "AHT") {
+        ls.itemDetails!.last = "0:00:00";
+      }
+
       await mainDB.put(itemID.toString(), ls);
 
       i++;

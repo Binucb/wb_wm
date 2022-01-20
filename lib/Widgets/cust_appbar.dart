@@ -5,6 +5,7 @@ import 'package:wm_workbench/Screens/addwords.dart';
 import 'package:wm_workbench/Services/methods.dart';
 import 'package:wm_workbench/Widgets/cust_alert.dart';
 import 'package:wm_workbench/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
 
@@ -21,6 +22,17 @@ class CustAppBar extends StatefulWidget with PreferredSizeWidget {
 }
 
 class _CustAppBarState extends State<CustAppBar> {
+  Future<void> _launchInWebViewWithDomStorage(String url) async {
+    if (!await launch(
+      url,
+      forceSafariVC: true,
+      forceWebView: true,
+      enableDomStorage: true,
+    )) {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -49,14 +61,10 @@ class _CustAppBarState extends State<CustAppBar> {
                     label: const Text("Download"),
                     onPressed: () {
                       customalert(
-                        context: context,
-                        title: "File Download",
-                        content: "Only saved line items will be downloaded",
-                        met2: download
-
-
-
-                      );
+                          context: context,
+                          title: "File Download",
+                          content: "Only saved line items will be downloaded",
+                          met2: download);
                     },
                     icon: const Icon(
                       Icons.cloud_download,
@@ -95,10 +103,10 @@ class _CustAppBarState extends State<CustAppBar> {
                     label: const Text("Add Highlight Words"),
                     onPressed: () {
                       showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const AddWords();
-                    });
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const AddWords();
+                          });
                     },
                     icon: const Icon(
                       Icons.highlight,
@@ -139,7 +147,14 @@ class _CustAppBarState extends State<CustAppBar> {
                           )),
                     ),
                     Text(Provider.of<ProviderOne>(context).pt!,
-                        style: TextStyle(fontSize: 14)),
+                        style: const TextStyle(fontSize: 14)),
+                    IconButton(
+                        onPressed: () {
+                          String toLaunch =
+                              'https://www.walmart.com/ip/${Provider.of<ProviderOne>(context, listen: false).id!}';
+                          _launchInWebViewWithDomStorage(toLaunch);
+                        },
+                        icon: const Icon(Icons.launch))
                   ],
                 )
               : const SizedBox(

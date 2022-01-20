@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:wm_workbench/Provider/provider.dart';
 import 'package:wm_workbench/Screens/workbench_screen.dart';
 import 'package:wm_workbench/main.dart';
-import 'package:wm_workbench/models/item_display.dart';
 import 'package:wm_workbench/models/maindb.dart';
 
 class CustomTable extends StatelessWidget {
@@ -13,8 +12,15 @@ class CustomTable extends StatelessWidget {
   final int? stCol;
   final int? idCol;
   final int? ptCol;
+  final int? ahtCol;
   const CustomTable(
-      {this.flMap, this.lst, this.idCol, this.ptCol, this.stCol, Key? key})
+      {this.flMap,
+      this.lst,
+      this.idCol,
+      this.ptCol,
+      this.stCol,
+      this.ahtCol,
+      Key? key})
       : super(key: key);
 
   @override
@@ -40,9 +46,12 @@ class CustomTable extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.bold))),
                     DataColumn(
                         label: Text("Status",
-                            style: TextStyle(fontWeight: FontWeight.bold)))
+                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    DataColumn(
+                        label: Text("AHT",
+                            style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
-                  rows: _createRows(context, lst!, idCol, ptCol, stCol),
+                  rows: _createRows(context, lst!, idCol, ptCol, stCol, ahtCol),
                 ),
               ),
             ),
@@ -54,7 +63,7 @@ class CustomTable extends StatelessWidget {
 }
 
 List<DataRow> _createRows(BuildContext context, List<MainDB>? lst, int? idCol,
-    int? ptCol, int? stCol) {
+    int? ptCol, int? stCol, int? ahtCol) {
   print("Running from _creteRows method inside custom table");
   List<DataRow> rowlst = [];
   var _loading = Provider.of<ProviderOne>(context, listen: false);
@@ -89,6 +98,7 @@ List<DataRow> _createRows(BuildContext context, List<MainDB>? lst, int? idCol,
         DataCell(SelectableText((element.itemDetails![stCol!].isNotEmpty)
             ? element.itemDetails![stCol]
             : "Not Started")),
+        DataCell(SelectableText(element.itemDetails![ahtCol!])),
       ]));
     }
   }

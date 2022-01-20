@@ -31,3 +31,23 @@ Map<String, String> dropDD = {
   "others":
       ",Curated from Base Data|,Unable to Curate (Fail),Mismatch with Base Data (Fail)"
 };
+
+format(Duration d) => d.toString().split('.').first.padLeft(8, "0");
+  String add2times({String? t1, String? t2}) {
+    
+   
+  List<String> x1 = t1!.split(":");
+     
+  Duration a1 = Duration(
+      hours: int.parse(x1[0]),
+      minutes: int.parse(x1[1]),
+      seconds: int.parse(x1[2]));
+ List<String>x2 = t2!.split(":");
+  Duration a2 = Duration(
+      hours: int.parse(x2[0]),
+      minutes: int.parse(x2[1]),
+      seconds: int.parse(x2[2]));
+
+  return format(a1 + a2);
+}
+ 

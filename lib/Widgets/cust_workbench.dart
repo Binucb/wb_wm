@@ -1,6 +1,5 @@
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:wm_workbench/Provider/provider.dart';
 import 'package:wm_workbench/Services/methods.dart';
@@ -8,7 +7,6 @@ import 'package:wm_workbench/Widgets/cust_alert.dart';
 import 'package:wm_workbench/main.dart';
 import 'package:wm_workbench/models/wb_model.dart';
 import 'package:wm_workbench/theme.dart';
-import 'package:universal_html/html.dart' as html;
 
 import '../constants.dart';
 
@@ -107,8 +105,22 @@ class MyCustWBScreen extends StatelessWidget {
 
                                         wd: Column(
                                           children: [
-                                            headerWidget(
-                                                dItem.sd!.attrVal!.header!),
+                                            Row(
+                                              children: [
+                                                HeaderWidget(
+                                                  txt: dItem
+                                                      .sd!.attrVal!.header!,
+                                                  dItem: dItem,
+                                                ),
+                                                Text(
+                                                  "${dItem.sd!.attrVal!.colValue.split(" ").length} words",
+                                                  style: const TextStyle(
+                                                      color: Colors.redAccent,
+                                                      fontSize: 10),
+                                                ),
+                                              ],
+                                            ),
+
                                             const SizedBox(height: 0.6),
                                             SizedBox(
                                               height: 250,
@@ -172,8 +184,33 @@ class MyCustWBScreen extends StatelessWidget {
                                         wt: wt * 0.33,
                                         wd: Column(
                                           children: [
-                                            headerWidget(
-                                                dItem.ld!.attrVal!.header!),
+                                            Row(
+                                              children: [
+                                                HeaderWidget(
+                                                  txt: dItem
+                                                      .ld!.attrVal!.header!,
+                                                  dItem: dItem,
+                                                ),
+                                                Text(
+                                                  "${dItem.ld!.attrVal!.colValue.split(" ").length} words",
+                                                  style: const TextStyle(
+                                                      color: Colors.redAccent,
+                                                      fontSize: 10),
+                                                ),
+                                                const Text(
+                                                  "|",
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 10),
+                                                ),
+                                                Text(
+                                                  "${"<li>".allMatches(dItem.ld!.attrVal!.colValue).length} Bullet points",
+                                                  style: const TextStyle(
+                                                      color: Colors.redAccent,
+                                                      fontSize: 10),
+                                                ),
+                                              ],
+                                            ),
                                             const SizedBox(height: 0.6),
                                             SizedBox(
                                               height: 250,
@@ -372,6 +409,7 @@ class CustCard extends StatelessWidget {
 
 Widget lstImages(List<ImageURL> imgUrl) {
   return ListView.separated(
+      shrinkWrap: true,
       separatorBuilder: (BuildContext context, index) {
         return const VerticalDivider();
       },
@@ -980,15 +1018,7 @@ class _RowChipsState extends State<RowChips> {
   var stopwatch = Stopwatch()..start();
 
   @override
-  void deactivate() {
-    // TODO: implement dispose
-    print("From Dashboard: ${stopwatch.elapsed}");
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print("From BuildMethod: ${stopwatch.elapsed}");
     var prov = Provider.of<AttProvider>(context, listen: true);
 
     int colNo = prov.listNo;
@@ -1045,11 +1075,12 @@ class _RowChipsState extends State<RowChips> {
           const SizedBox(height: 16),
           ElevatedButton.icon(
               onPressed: () async {
+                var dbProv = Provider.of<DBProvider>(context, listen: false);
                 int stCol = int.parse(configDB.get("stCol")!) + 1;
-                Provider.of<DBProvider>(context, listen: false)
-                    .saveToDB(stCol, "Completed");
-                await Provider.of<DBProvider>(context, listen: false)
-                    .changedl(true);
+                dbProv.saveToDB(stCol, "Completed");
+                dbProv.updateTime(format(stopwatch.elapsed));
+
+                await dbProv.changedl(true);
                 print(stopwatch.elapsed);
                 customalert(
                     context: context,

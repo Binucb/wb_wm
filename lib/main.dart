@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
+//import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
+import 'package:url_strategy/url_strategy.dart';
 import 'package:wm_workbench/Provider/provider.dart';
-import 'package:wm_workbench/Screens/login_screen.dart';
-import 'package:wm_workbench/Screens/workbench_screen.dart';
-import 'package:wm_workbench/Services/methods.dart';
-import 'package:wm_workbench/Widgets/cust_alert.dart';
 import 'package:wm_workbench/Widgets/cust_appbar.dart';
 import 'package:wm_workbench/constants.dart';
 import 'package:wm_workbench/models/item_display.dart';
 import 'package:wm_workbench/models/maindb.dart';
 import 'package:wm_workbench/models/pt.dart';
 import 'package:wm_workbench/theme.dart';
-import 'package:url_strategy/url_strategy.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import 'Screens/custom_table.dart';
 import 'Widgets/custdrawer.dart';
@@ -81,10 +76,10 @@ class MyHomePage extends StatelessWidget {
                   ValueListenableBuilder<Box<MainDB>>(
                       valueListenable: mainDB.listenable(),
                       builder: (context, box, widget) {
-                        print("============");
-                        print(configDB.get("stCol"));
-                        print(configDB.get("ptCol"));
-                        print(configDB.get("idCol"));
+                        // print("============");
+                        // print(configDB.get("stCol"));
+                        // print(configDB.get("ptCol"));
+                        // print(configDB.get("idCol"));
 
                         //db.changeFlMap(box.toMap());
 
@@ -99,11 +94,13 @@ class MyHomePage extends StatelessWidget {
                             //     onPressed: () {},
                             //     child: Text("${box.toMap().length}")),
                             CustomTable(
-                                flMap: box.toMap(),
-                                lst: box.values.toList(),
-                                idCol: int.parse(configDB.get("idCol")!),
-                                ptCol: int.parse(configDB.get("ptCol")!),
-                                stCol: int.parse(configDB.get("stCol")!))
+                              flMap: box.toMap(),
+                              lst: box.values.toList(),
+                              idCol: int.parse(configDB.get("idCol")!),
+                              ptCol: int.parse(configDB.get("ptCol")!),
+                              stCol: int.parse(configDB.get("stCol")!),
+                              ahtCol: int.parse(configDB.get("tmCol")!),
+                            )
                           ],
                         );
                         // FutureBuilder(

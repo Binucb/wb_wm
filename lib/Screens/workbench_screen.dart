@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -35,6 +36,7 @@ class _WBScreenState extends State<WBScreen> {
     //print(db.rwNum);
     //provider.chgWBScreen(true);
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       title: projectName,
       theme: (provider.appTheme!) ? ProjectTheme.dark() : ProjectTheme.light(),
@@ -43,9 +45,18 @@ class _WBScreenState extends State<WBScreen> {
           appBar: CustAppBar(),
           body: (db.item.itemID != "")
               ? const MyCustWBScreen()
-              : const Text("Loading..")),
+              : const Center(child: Text("Loading.."))),
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }
 
 

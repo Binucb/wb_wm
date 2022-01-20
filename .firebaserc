@@ -1,5 +1,14 @@
 {
   "projects": {
-    "default": "wm-workbench"
+    "default": "wm-iae"
+  },
+  "targets": {
+    "wm-iae": {
+      "hosting": {
+        "ori": [
+          "vantage-workbench"
+        ]
+      }
+    }
   }
 }

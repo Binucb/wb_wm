@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wm_workbench/Provider/provider.dart';
+import 'package:wm_workbench/models/wb_model.dart';
 
 customalert(
     {BuildContext? context, String? title, String? content, Function? met2}) {
@@ -123,31 +126,163 @@ class LoadingIndicatorDialog {
   }
 }
 
-Widget headerWidget(String txt) {
-  return Card(
-    elevation: 2,
-    color: Colors.black38,
-    shape: RoundedRectangleBorder(
-      //side: const BorderSide(color: Colors.white70, width: 1),
-      borderRadius: BorderRadius.circular(15),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(6.0),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(
-            width: 10,
+class HeaderWidget extends StatefulWidget {
+  final Display? dItem;
+  final String? txt;
+
+  const HeaderWidget({Key? key, this.txt, this.dItem}) : super(key: key);
+
+  @override
+  State<HeaderWidget> createState() => _HeaderWidgetState();
+}
+
+class _HeaderWidgetState extends State<HeaderWidget> {
+  late TextEditingController _sdController;
+  late TextEditingController _ldController;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _sdController.dispose();
+    _ldController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _sdController =
+        TextEditingController(text: widget.dItem!.sd!.attrVal!.colValue);
+    _ldController =
+        TextEditingController(text: widget.dItem!.ld!.attrVal!.colValue);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var db = Provider.of<DBProvider>(context, listen: false);
+    void _showMaterialDialog() {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Dialog(
+              child: Card(
+                child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        //header
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(6, 4, 0, 6),
+                          child: Focus(
+                            onFocusChange: (value) {
+                              if (value == false) {
+                                //print("Save : " + _controller.text);
+                                //print("Save : " + attrCol.toString());
+                                db.saveToDB(widget.dItem!.sd!.attrVal!.colNum!,
+                                    _sdController.text);
+                                widget.dItem!.sd!.attrVal!.colValue =
+                                    _sdController.text;
+                              }
+                            },
+                            child: TextFormField(
+                              maxLines: 10,
+                              //onChanged: (value) => db.saveToDB(attrCol!, value),
+                              style: Theme.of(context).textTheme.bodyText2,
+                              controller: _sdController,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(10, 25, 10, 10),
+                                labelText: widget.dItem!.sd!.attrVal!.header,
+                                labelStyle:
+                                    Theme.of(context).textTheme.bodyText1,
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(6, 4, 0, 6),
+                          child: Focus(
+                            onFocusChange: (value) {
+                              if (value == false) {
+                                //print("Save : " + _controller.text);
+                                //print("Save : " + attrCol.toString());
+                                db.saveToDB(widget.dItem!.ld!.attrVal!.colNum!,
+                                    _ldController.text);
+                                widget.dItem!.ld!.attrVal!.colValue =
+                                    _ldController.text;
+                              }
+                            },
+                            child: TextFormField(
+                              maxLines: 7,
+                              //onChanged: (value) => db.saveToDB(attrCol!, value),
+                              style: Theme.of(context).textTheme.bodyText2,
+                              controller: _ldController,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(10, 25, 10, 10),
+                                labelText: widget.dItem!.ld!.attrVal!.header,
+                                labelStyle:
+                                    Theme.of(context).textTheme.bodyText1,
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        ElevatedButton.icon(
+                            onPressed: () async {
+                              await db.saveToDB(
+                                  widget.dItem!.sd!.attrVal!.colNum!,
+                                  _sdController.text);
+                              await db.saveToDB(
+                                  widget.dItem!.ld!.attrVal!.colNum!,
+                                  _ldController.text);
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(Icons.save),
+                            label: const Text("Save"))
+                      ],
+                    )), //sizedBox ends
+              ),
+            );
+          });
+    }
+
+    return GestureDetector(
+      onTap: _showMaterialDialog,
+      child: Card(
+        elevation: 2,
+        color: Colors.black38,
+        shape: RoundedRectangleBorder(
+          //side: const BorderSide(color: Colors.white70, width: 1),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                widget.txt!,
+                style: const TextStyle(fontSize: 12, color: Colors.white),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+            ],
           ),
-          Text(
-            txt,
-            style: const TextStyle(fontSize: 12, color: Colors.white),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-        ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
