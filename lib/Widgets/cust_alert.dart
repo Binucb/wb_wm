@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wm_workbench/Provider/provider.dart';
+import 'package:wm_workbench/main.dart';
 import 'package:wm_workbench/models/wb_model.dart';
 
 customalert(
@@ -37,6 +38,61 @@ customalert(
                   await met2!(context);
                 },
                 child: const Text("Okay"),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+customalert1(
+    {BuildContext? context,
+    String? title,
+    String? content,
+    Function? met2,
+    var dbProv}) {
+  return showDialog(
+    context: context!,
+    builder: (ctx) {
+      //var dbProv = Provider.of<DBProvider>(context, listen: false);
+      int stCol = int.parse(configDB.get("stCol")!) + 1;
+
+      return Container(
+        height: 40,
+        width: 120,
+        constraints: const BoxConstraints(maxWidth: 95, maxHeight: 40),
+        child: AlertDialog(
+          title: Text(title!),
+          content: Text(content!),
+          actions: <Widget>[
+            Container(
+              height: 40,
+              width: 120,
+              constraints: const BoxConstraints(maxWidth: 95, maxHeight: 40),
+              child: TextButton(
+                onPressed: () async {
+                  print(stCol);
+                  await dbProv.saveToDB(stCol, "In Progress");
+                  Navigator.of(ctx).pop();
+                  // await met2!(context);
+                },
+                child: const Text("Cancel"),
+              ),
+            ),
+            Container(
+              height: 40,
+              width: 120,
+              constraints: const BoxConstraints(maxWidth: 95, maxHeight: 40),
+              child: TextButton(
+                onPressed: () async {
+                  print(stCol);
+                  await dbProv.saveToDB(stCol, "Completed");
+                  Navigator.of(ctx).pop();
+                  await met2!(context);
+                },
+                child: const Text("OK"),
               ),
             ),
           ],

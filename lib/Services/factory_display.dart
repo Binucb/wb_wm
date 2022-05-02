@@ -63,7 +63,8 @@ void cnvLsttoDisp(
   List<Attribute>? lst3 = [];
 
   for (Attribute attr in cons) {
-    //print(attr.attrVal!.header);
+    print(attr.attrVal!.header);
+
     disp.rwNum = ky;
     disp.itemID = lstI[idCol];
     disp.pt = pt;

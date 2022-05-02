@@ -21,8 +21,8 @@ void download(BuildContext context) async {
   int i = 1;
   //List<String> dataList = [];
   MainDB? headers = mainDB.get("Item ID");
-
-  sheetObject.insertRowIterables(headers!.itemDetails as List<String>, 0);
+  headers!.itemDetails!.add("Emp ID");
+  sheetObject.insertRowIterables(headers.itemDetails as List<String>, 0);
 
   int idCol = int.parse(configDB.get("idCol")!);
   int stCol = int.parse(configDB.get("stCol")!);
@@ -30,6 +30,7 @@ void download(BuildContext context) async {
   mainDB.values.toList().forEach((ele) {
     if (ele.itemDetails![idCol] != "Item ID" &&
         ele.itemDetails![stCol] == "Completed") {
+      ele.itemDetails!.add(configDB.get("lStatus")!);
       sheetObject.insertRowIterables(ele.itemDetails as List<String>, i);
       i++;
     }
@@ -108,5 +109,3 @@ void uploadPT(BuildContext context) async {
     //_db.changedl(true);
   }
 }
-
-

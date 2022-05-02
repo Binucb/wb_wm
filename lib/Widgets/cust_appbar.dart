@@ -75,12 +75,15 @@ class _CustAppBarState extends State<CustAppBar> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
                 child: IconButton(
                   onPressed: () async {
-                    await customalert(
-                        context: context,
-                        title: "Config File upload",
-                        content:
-                            "Would you like update the config file for the category. \nNote:Old files will be deleted from the Database",
-                        met2: uploadPT);
+                    // var ptProv =
+                    //     Provider.of<PTProvider>(context, listen: false);
+                    // ptProv.getCsv();
+                    // await customalert(
+                    //     context: context,
+                    //     title: "Config File upload",
+                    //     content:
+                    //         "Would you like update the config file for the category. \nNote:Old files will be deleted from the Database",
+                    //     met2: uploadPT);
                   },
                   icon: const Icon(
                     Icons.post_add_outlined,
@@ -132,14 +135,14 @@ class _CustAppBarState extends State<CustAppBar> {
                     ),
                     Text(
                       Provider.of<ProviderOne>(context).id!,
-                      style: TextStyle(fontSize: 14),
+                      style: const TextStyle(fontSize: 14),
                     ),
                     const Icon(
                       Icons.chevron_right,
                       color: Colors.white70,
                     ),
                     const Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: Text("PT : ",
                           style: TextStyle(
                             fontSize: 12,

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:wm_workbench/Provider/provider.dart';
 import 'package:wm_workbench/Services/methods.dart';
 import 'package:wm_workbench/Widgets/cust_alert.dart';
+import 'package:wm_workbench/Widgets/cust_image_list.widget.dart';
 import 'package:wm_workbench/main.dart';
 import 'package:wm_workbench/models/wb_model.dart';
 import 'package:wm_workbench/theme.dart';
@@ -280,7 +281,7 @@ class MyCustWBScreen extends StatelessWidget {
                               //imgs
                               ht: ht * 0.3,
                               wt: wt * 0.665,
-                              wd: lstImages(dItem.lstImages!))
+                              wd: LstImages(imgUrl: dItem.lstImages!))
                         ],
                       ),
                       //attribute columns
@@ -407,50 +408,102 @@ class CustCard extends StatelessWidget {
   }
 }
 
-Widget lstImages(List<ImageURL> imgUrl) {
-  return ListView.separated(
-      shrinkWrap: true,
-      separatorBuilder: (BuildContext context, index) {
-        return const VerticalDivider();
-      },
-      scrollDirection: Axis.horizontal,
-      itemCount: imgUrl.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Card(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    imgUrl[index].label!,
-                    style: const TextStyle(fontSize: 12, color: Colors.black),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                        barrierDismissible: true,
-                        context: context,
-                        builder: (ctx) => Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.network(imgUrl[index].imageURL),
-                            ));
-                  },
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.20,
-                    child: Image.network(
-                      imgUrl[index].imageURL,
-                      fit: BoxFit.contain,
+class LstImages extends StatelessWidget {
+  final List<ImageURL>? imgUrl;
+  const LstImages({Key? key, this.imgUrl}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var db = Provider.of<DBProvider>(context, listen: true);
+    return ListView.separated(
+        shrinkWrap: true,
+        separatorBuilder: (BuildContext context, index) {
+          return const VerticalDivider();
+        },
+        scrollDirection: Axis.horizontal,
+        itemCount: imgUrl!.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      imgUrl![index].label!,
+                      style: const TextStyle(fontSize: 12, color: Colors.black),
                     ),
                   ),
-                ),
-              ],
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                          barrierDismissible: true,
+                          context: context,
+                          builder: (ctx) => Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.network(imgUrl![index].imageURL),
+                              ));
+                    },
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.20,
+                      child: Image.network(
+                        imgUrl![index].imageURL,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      });
+          );
+        });
+  }
 }
+
+// Widget lstImages(List<ImageURL> imgUrl) {
+//   return ListView.separated(
+//       shrinkWrap: true,
+//       separatorBuilder: (BuildContext context, index) {
+//         return const VerticalDivider();
+//       },
+//       scrollDirection: Axis.horizontal,
+//       itemCount: imgUrl.length,
+//       itemBuilder: (BuildContext context, int index) {
+//         return Card(
+//           child: SingleChildScrollView(
+//             child: Column(
+//               children: [
+//                 Padding(
+//                   padding: const EdgeInsets.all(8.0),
+//                   child: Text(
+//                     imgUrl[index].label!,
+//                     style: const TextStyle(fontSize: 12, color: Colors.black),
+//                   ),
+//                 ),
+//                 GestureDetector(
+//                   onTap: () {
+//                     showDialog(
+//                         barrierDismissible: true,
+//                         context: context,
+//                         builder: (ctx) => Padding(
+//                               padding: const EdgeInsets.all(8.0),
+//                               child: Image.network(imgUrl[index].imageURL),
+//                             ));
+//                   },
+//                   child: SizedBox(
+//                     height: MediaQuery.of(context).size.height * 0.20,
+//                     child: Image.network(
+//                       imgUrl[index].imageURL,
+//                       fit: BoxFit.contain,
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         );
+//       });
+// }
 
 class CustBox extends StatefulWidget {
   final Attribute? attr;
@@ -810,6 +863,9 @@ class CustAttrCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool imageCard =
+        (attrHeader!.toLowerCase().contains("image url") ? true : false);
+
     var db = Provider.of<DBProvider>(context, listen: false);
     TextEditingController _controller =
         TextEditingController(text: defText ?? " ");
@@ -848,7 +904,7 @@ class CustAttrCard extends StatelessWidget {
               String txtWrd1 =
                   (_controller.text != "") ? _controller.text + "|" : "";
               String txtWrd2 =
-                  (_controller1.text != "") ? _controller1.text : "";
+                  (_controller1.text.isNotEmpty) ? _controller1.text : "";
 
               var atCol = Provider.of<PTProvider>(context, listen: false);
               atCol.addToAttrWrds(txtWrd1 + txtWrd2);
@@ -861,6 +917,22 @@ class CustAttrCard extends StatelessWidget {
               ),
             ),
           ),
+          (imageCard)
+              ? ElevatedButton(
+                  onPressed: () {
+                    var prov = Provider.of<ProviderOne>(context, listen: false);
+                    prov.setImgList(_controller.text.split(","));
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CustImageList(
+                            colNum: attr!.attrVal!.colNum,
+                          );
+                        });
+                    print(_controller.text);
+                  },
+                  child: const Text("Expand"))
+              : const SizedBox(),
           Padding(
             padding: const EdgeInsets.all(6.0),
             child: Column(
@@ -1082,10 +1154,12 @@ class _RowChipsState extends State<RowChips> {
 
                 await dbProv.changedl(true);
                 print(stopwatch.elapsed);
-                customalert(
+                customalert1(
+                    dbProv: dbProv,
                     context: context,
                     title: "Save Item",
-                    content: "Would you like to save the item? Please confirm",
+                    content:
+                        "Would you like to Save the changes to this item?",
                     met2: reload);
 
                 // Navigator.push(

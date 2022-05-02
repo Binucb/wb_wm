@@ -1,5 +1,5 @@
 String projectName = "Vantage - Workbench";
-String version = "Version 1.3";
+String version = "Version 1.4";
 
 List<String> fetchURL(String text) {
   List<String> urlList = [];
@@ -18,9 +18,9 @@ List<String> fetchURL(String text) {
 Map<String, String> dropDD = {
   "main image url":
       ",-|,Contains Watermark (Fail),Low Quality/Blurred Image (Fail),Image Unavailable on the URL (Fail),Cropped Images (Fail),No URL (Fail),Dropbox/Google Drive Images (Fail),Lifestyle/Label/Scaling Images (Fail),Mismatch with Base Data (Fail)",
-  "product type":
+  "correct product type":
       ",Missing/Insufficient Base Data,Different Category PT,Not Part of Closed List,Re-tagged to Correct PT,Image-Content Mismatch|,Missing/Insufficient Base Data,Different Category PT,Not Part of Closed List,Re-tagged to Correct PT,Image-Content Mismatch",
-  "product name":
+  "correct product name":
       ",Added Brand,Formatting Errors Fixed,Casing Issues Fixed,Removed special characters/redundant text,Title Structure Fixed,Grammatical Error/Misspelling Fixed|,Missing Information (Fail),Insufficient Character Count (Fail),Missing Key Attributes (Fail)",
   "product short description":
       ",Promotional Text Removed,Special Characters/Redundant Text Removed,Formatting Errors Fixed,Grammatical Error/Misspelling Fixed,Casing Issues Fixed|,Duplicate/Repetition of LD (Fail),SD in Bullet Points (Fail),Insufficient Word Count (Fail)",
@@ -33,16 +33,14 @@ Map<String, String> dropDD = {
 };
 
 format(Duration d) => d.toString().split('.').first.padLeft(8, "0");
-  String add2times({String? t1, String? t2}) {
-    
-   
+String add2times({String? t1, String? t2}) {
   List<String> x1 = t1!.split(":");
-     
+
   Duration a1 = Duration(
       hours: int.parse(x1[0]),
       minutes: int.parse(x1[1]),
       seconds: int.parse(x1[2]));
- List<String>x2 = t2!.split(":");
+  List<String> x2 = t2!.split(":");
   Duration a2 = Duration(
       hours: int.parse(x2[0]),
       minutes: int.parse(x2[1]),
@@ -50,4 +48,3 @@ format(Duration d) => d.toString().split('.').first.padLeft(8, "0");
 
   return format(a1 + a2);
 }
- 

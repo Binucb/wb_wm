@@ -1,6 +1,8 @@
+import 'package:csv/csv.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:wm_workbench/Services/factory_display.dart';
 import 'package:wm_workbench/constants.dart';
@@ -10,6 +12,7 @@ import 'package:wm_workbench/models/maindb.dart';
 import 'package:wm_workbench/models/pt.dart';
 import 'package:wm_workbench/models/wb_model.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:http/http.dart' as http;
 
 List<int> _cntStatus = [0, 0, 0];
 
@@ -38,27 +41,58 @@ class ProviderOne extends ChangeNotifier {
 
   String? _id = "234";
   String? _pt = "Test PT";
+  List<String>? _imgList = [];
+  List<String>? get imgList => _imgList;
+
+  setImgList(List<String>? lst) {
+    _imgList = lst;
+    notifyListeners();
+  }
+
+  setImgatInd(int index, String url) {
+    _imgList![index] = url;
+    notifyListeners();
+  }
 
   String? get id => _id;
   String? get pt => _pt;
-
-  //bool? get dataLoading => _dataLoading;
-
-  // changeDataLoading(bool val) {
-  //   _dataLoading = val;
-  //   notifyListeners();
-  // }
 
   setIdPt(String id, String pt) {
     _id = id;
     _pt = pt;
     notifyListeners();
   }
+
+  void fetchAlbum() async {
+    print("api called");
+    final response =
+        await http.get(Uri.parse('http://10.127.116.51:5572/get_cat_lst'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      print('Request failed with status: ${response.statusCode}.');
+    }
+  }
 }
 
 class PTProvider extends ChangeNotifier {
   int? _ptCnt = 1;
   List<String> _attrWrds = [];
+
+  getCsv(String cat) async {
+    final myData = await rootBundle.loadString("assets/csv/config_master.csv");
+    List<List<dynamic>> rowsAsListOfValues =
+        const CsvToListConverter().convert(myData);
+    List<List<dynamic>> tstList =
+        rowsAsListOfValues.where((element) => element[0] == cat).toList();
+
+    addtoPTBox(tstList);
+  }
 
   List<String> get attrWrds {
     List<String> _lst;
@@ -88,7 +122,7 @@ class PTProvider extends ChangeNotifier {
   }
 
   // Future<int?> ptCount() async {
-  //   try {
+  //   try {r
   //     _ptCnt = ptDB.toMap().length;
   //   } catch (e) {
   //     print(e);
@@ -99,23 +133,23 @@ class PTProvider extends ChangeNotifier {
   //   return _ptCnt;
   // }
 
-  addtoPTBox(List<List<Data?>> frmExcel) async {
+  addtoPTBox(List<List<dynamic>> frmExcel) async {
     ptDB.clear();
 
     for (var element in frmExcel) {
       PtDB ls = PtDB();
-      ls.required = element[1]!.value ?? "";
-      ls.optional = element[2]!.value ?? "";
-      if (element[3] == null) {
+      ls.required = element[3]! ?? "";
+      ls.optional = element[4]! ?? "";
+      if (element[5] == null) {
         ls.conditional = "";
       } else {
-        ls.conditional = element[3]!.value ?? "";
+        ls.conditional = element[5]! ?? "";
       }
 
-      await ptDB.put(element[0]!.value, ls);
+      await ptDB.put(element[2]!, ls);
     }
     print("from PT method");
-    print(ptCnt);
+    //print(ptCnt);
     notifyListeners();
   }
 }
@@ -239,6 +273,8 @@ class DBProvider extends ChangeNotifier {
 
     MainDB? lst = mainDB.get(actID);
     mDB.itemDetails = lst!.itemDetails;
+    print("AHT");
+    print(colNum);
     mDB.itemDetails![colNum - 1] = val;
 
     //print(mDB.itemDetails![int.parse(stCol!) - 1]);
@@ -249,17 +285,18 @@ class DBProvider extends ChangeNotifier {
 //Save to DB
   saveToDB(int colNum, String val) {
     MainDB mDB = MainDB();
-
+    print("Save DB is called");
+    // print(colNum);
+    // print(val);
     mDB.itemDetails = [];
     mDB.rwNm = 1;
     var stCol = configDB.get("stCol");
-
     var actID = configDB.get("actID");
 
     MainDB? lst = mainDB.get(actID);
 
-    //print(lst!.itemDetails![colNum - 1]);
-    mDB.itemDetails = lst!.itemDetails;
+    print(lst!.itemDetails![colNum - 1]);
+    mDB.itemDetails = lst.itemDetails;
     mDB.itemDetails![colNum - 1] = val;
 
     //print(mDB.itemDetails![int.parse(stCol!) - 1]);
@@ -327,10 +364,14 @@ class DBProvider extends ChangeNotifier {
         print('ln179 executed in ${stopwatch.elapsed}');
         for (var element in tstList!.itemDetails!) {
           //print(element.toLowerCase().toString());
-          headers.add(element.toLowerCase().toString());
+          if (element != null) {
+            headers.add(element.toLowerCase().toString());
+          }
         }
         int idCol = headers.indexOf("item id");
-        configDB.put("idCol", idCol.toString());
+        if (idCol != null) {
+          configDB.put("idCol", idCol.toString());
+        }
 
         int ptCol = headers.indexOf("product type");
 
@@ -429,7 +470,9 @@ class DBProvider extends ChangeNotifier {
 
       i++;
     }
-    changedl(true).then(html.window.location.reload());
+    // changedl(true).then(html.window.location.reload());
+    await changedl(true);
+    html.window.location.reload();
 
     //notifyListeners();
     //print("I am run without any errors in provider- addtoBox");

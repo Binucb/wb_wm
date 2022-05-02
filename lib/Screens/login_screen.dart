@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:universal_html/html.dart';
+import 'package:wm_workbench/constants.dart';
 import 'package:wm_workbench/main.dart';
 
 import 'package:wm_workbench/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:wm_workbench/Provider/provider.dart';
+import 'package:hashids2/hashids2.dart';
+import 'package:universal_html/html.dart' as html;
 
 class LoginScreen extends StatefulWidget {
   static const String route = '/loginscreen';
@@ -17,8 +20,19 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String erMsg = "";
   final TextEditingController _un = TextEditingController();
   final TextEditingController _pwd = TextEditingController();
+  String dropdownvalue = "Choose Category";
+
+  var categories = [
+    'Choose Category',
+    'Apparel',
+    'Furniture',
+    'F&B',
+    'Home',
+    'Books',
+  ];
 
   @override
   void initState() {
@@ -28,15 +42,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<ProviderOne>(context);
-    var theme = Provider.of<ThemeProvider>(context);
-    var ab = Provider.of<AppBarProvider>(context);
+    //var provider = Provider.of<ProviderOne>(context);
+    //var theme = Provider.of<ThemeProvider>(context);
+    //var ab = Provider.of<AppBarProvider>(context, listen: false);
 
-    ab.chgWBScreen(false);
+    //ab.chgWBScreen(false);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: (theme.appTheme!) ? ProjectTheme.dark() : ProjectTheme.light(),
+      theme: ProjectTheme.light(),
       home: Scaffold(
         body: Center(
           child: Card(
@@ -50,8 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     flex: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Image.network(
-                          "https://firebasestorage.googleapis.com/v0/b/wm-sd-ld.appspot.com/o/login_screen.gif?alt=media&token=e31a8653-4918-4eba-8cf9-1a30333926da"),
+                      child: Image.asset("assets/images/login_screen.gif"),
                     ),
                   ),
                   Padding(
@@ -66,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.2,
                           ),
-                          const Text("V1.3 Please Login"),
+                          Text(version),
                           const SizedBox(height: 20),
                           CustomText(
                             un: _un,
@@ -74,19 +87,51 @@ class _LoginScreenState extends State<LoginScreen> {
                             lbl: "Associate ID",
                           ),
                           CustomText(un: _pwd, oText: true, lbl: "Password"),
+                          Text(
+                            erMsg,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                          const SizedBox(height: 5),
+                          DropdownButton(
+                              hint: const Text("Choose you category"),
+                              value: dropdownvalue,
+                              items: categories.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownvalue = newValue!;
+                                });
+                              }),
                           const SizedBox(height: 20),
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.green,
                               ),
-                              onPressed: () {
-                                if (_pwd.text == "password") {
+                              onPressed: () async {
+                                if (pswdChk(_un.text, _pwd.text)) {
+                                  var ptProv = Provider.of<PTProvider>(context,
+                                      listen: false);
+                                  await ptProv.getCsv(dropdownvalue);
+
+                                  configDB.put("lStatus", _un.text);
                                   Navigator.of(context).pop();
+                                  _un.text = "";
+                                  _pwd.text = "";
                                   Navigator.push(
                                       context,
                                       PageTransition(
                                           type: PageTransitionType.bottomToTop,
                                           child: const MyHomePage()));
+                                  //html.window.location.reload();
+                                } else {
+                                  setState(() {
+                                    erMsg =
+                                        "Incorrect Associate ID & Password combinantion ";
+                                  });
                                 }
                               },
                               child: const Padding(
@@ -180,4 +225,25 @@ class CustomText extends StatelessWidget {
               ))),
     );
   }
+}
+
+bool pswdChk(String str1, String str2) {
+  if (str2 == retpsw(str1)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+String retpsw(String dat) {
+  final hashids = HashIds(
+    salt: 'xed4567',
+    minHashLength: 8,
+    alphabet: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+  );
+  String id = dat;
+  String res = id.split("").reversed.join("");
+  final code = hashids.encode(int.parse(res));
+
+  return code;
 }

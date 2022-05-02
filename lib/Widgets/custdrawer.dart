@@ -6,6 +6,7 @@ import 'package:wm_workbench/Screens/config_filescreen.dart';
 import 'package:wm_workbench/Screens/workbench_screen.dart';
 import 'package:wm_workbench/constants.dart';
 import 'package:wm_workbench/main.dart';
+import 'package:universal_html/html.dart' as html;
 
 class DrawerCustom extends StatelessWidget {
   const DrawerCustom({
@@ -28,6 +29,11 @@ class DrawerCustom extends StatelessWidget {
             projectName,
             style: Theme.of(context).textTheme.headline2,
           ),
+          Text(
+            configDB.get("lStatus")!,
+            style: const TextStyle(fontSize: 13),
+          ),
+
           const SizedBox(
             height: 15,
           ),
@@ -38,16 +44,17 @@ class DrawerCustom extends StatelessWidget {
             height: 15,
           ),
           custDrawer(context, Icons.dashboard, () {
-            Navigator.pop(context);
-            _ab.chgWBScreen(false);
-            db.changedl(true);
+            _loading.fetchAlbum();
+            // Navigator.pop(context);
+            // _ab.chgWBScreen(false);
+            // db.changedl(true);
 
-            Navigator.push(
-                context,
-                PageTransition(
-                    type: PageTransitionType.bottomToTop,
-                    child: const MyHomePage()));
-          }, "Dashboard"),
+            // Navigator.push(
+            //     context,
+            //     PageTransition(
+            //         type: PageTransitionType.bottomToTop,
+            //         child: const MyHomePage()));
+          }, "Dashboard(WIP)"),
           custDrawer(context, Icons.app_registration_outlined, () {
             String? actID = configDB.get("actID");
             db.chagenRwNum(actID!);
@@ -61,22 +68,31 @@ class DrawerCustom extends StatelessWidget {
                     type: PageTransitionType.bottomToTop,
                     child: const WBScreen()));
           }, "Workbench"),
-          custDrawer(context, Icons.settings, () {
-            Navigator.pop(context);
-            _ab.chgWBScreen(false);
+          // custDrawer(context, Icons.settings, () {
+          //   Navigator.pop(context);
+          //   _ab.chgWBScreen(false);
 
-            Navigator.push(
+          //   Navigator.push(
+          //       context,
+          //       PageTransition(
+          //           type: PageTransitionType.bottomToTop,
+          //           child: const ConfigScreen()));
+          // }, "Config Files"),
+          // custDrawer(context, Icons.highlight, () {}, "Add Highlight Words"),
+          // custDrawer(context, Icons.light_mode_outlined, () {
+          //   //print("i am pressed while changing theeme");
+          //   theme.changeTheme();
+          // }, "Change Dark/Light Theme"),
+          custDrawer(context, Icons.power_settings_new, () async {
+            await configDB.put("lStatus", "");
+            Navigator.pop(context);
+
+            Navigator.pushReplacement(
                 context,
                 PageTransition(
                     type: PageTransitionType.bottomToTop,
-                    child: const ConfigScreen()));
-          }, "Config Files"),
-          custDrawer(context, Icons.highlight, () {}, "Add Highlight Words"),
-          custDrawer(context, Icons.light_mode_outlined, () {
-            //print("i am pressed while changing theeme");
-            theme.changeTheme();
-          }, "Change Dark/Light Theme"),
-          custDrawer(context, Icons.power_settings_new, () {}, "Logout"),
+                    child: const MyApp()));
+          }, "Logout"),
           Expanded(
             child: Align(
                 alignment: Alignment.bottomRight,

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 //import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -5,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:wm_workbench/Provider/provider.dart';
+import 'package:wm_workbench/Screens/login_screen.dart';
 import 'package:wm_workbench/Widgets/cust_appbar.dart';
 import 'package:wm_workbench/constants.dart';
 import 'package:wm_workbench/models/item_display.dart';
@@ -21,6 +23,7 @@ late Box<PtDB> ptDB;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   setPathUrlStrategy();
   await Hive.initFlutter();
   Hive.registerAdapter(MainDBAdapter());
@@ -46,12 +49,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<ThemeProvider>(context);
+    String lStatus = configDB.get("lStatus") ?? "";
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: projectName,
-      theme: (provider.appTheme!) ? ProjectTheme.dark() : ProjectTheme.light(),
-      home: const MyHomePage(),
+      theme: ProjectTheme.light(),
+      home: (lStatus == "") ? const LoginScreen() : const MyHomePage(),
     );
   }
 }

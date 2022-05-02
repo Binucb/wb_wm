@@ -80,9 +80,9 @@ List<DataRow> _createRows(BuildContext context, List<MainDB>? lst, int? idCol,
           // print(db.flMap!.length);
           // print(element.itemDetails![idCol]);
           db.pullItem(context, db.flMap!, element.itemDetails![idCol]);
-          int? stCol = int.parse(configDB.get("stCol")!) + 1;
-          print("Status:" + stCol.toString());
-          db.saveToDB(stCol, "In Progress");
+          int? stCol = int.parse(configDB.get("stCol")!);
+          print("Status:" + element.itemDetails![stCol]);
+          //db.saveToDB(stCol, "In Progress");
           _loading.setIdPt(
               element.itemDetails![idCol], element.itemDetails![ptCol!]);
           Navigator.push(
