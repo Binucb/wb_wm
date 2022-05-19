@@ -84,12 +84,14 @@ class PTProvider extends ChangeNotifier {
   int? _ptCnt = 1;
   List<String> _attrWrds = [];
 
-  getCsv(String cat) async {
+  getCsv(String cat, String ptg) async {
     final myData = await rootBundle.loadString("assets/csv/config_master.csv");
     List<List<dynamic>> rowsAsListOfValues =
         const CsvToListConverter().convert(myData);
-    List<List<dynamic>> tstList =
-        rowsAsListOfValues.where((element) => element[0] == cat).toList();
+    List<List<dynamic>> tstList = rowsAsListOfValues
+        .where((element) => element[0] == cat && element[1] == ptg)
+        .toList();
+    //print(tstList);
 
     addtoPTBox(tstList);
   }

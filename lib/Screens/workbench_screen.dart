@@ -24,7 +24,7 @@ class _WBScreenState extends State<WBScreen> {
   @override
   Widget build(BuildContext context) {
     String ky = configDB.get("actID")!;
-    var provider = Provider.of<ThemeProvider>(context, listen: false);
+    //var provider = Provider.of<ThemeProvider>(context, listen: false);
     var db = Provider.of<DBProvider>(context, listen: false);
 
     //var rwNum = Provider.of<DBProvider>(context, listen: false).rwNum;
@@ -39,7 +39,7 @@ class _WBScreenState extends State<WBScreen> {
       scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       title: projectName,
-      theme: (provider.appTheme!) ? ProjectTheme.dark() : ProjectTheme.light(),
+      theme: ProjectTheme.light(),
       home: Scaffold(
           drawer: const DrawerCustom(),
           appBar: CustAppBar(),

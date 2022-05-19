@@ -75,6 +75,12 @@ class MyCustWBScreen extends StatelessWidget {
                                               backgroundColor: Colors.blue)),
                                       EasyRichTextPattern(
                                           matchWordBoundaries: false,
+                                          targetString: dupString(dItem.pn!),
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              backgroundColor: Colors.red)),
+                                      EasyRichTextPattern(
+                                          matchWordBoundaries: false,
                                           targetString: context
                                               .watch<PTProvider>()
                                               .attrWrds,
@@ -126,10 +132,25 @@ class MyCustWBScreen extends StatelessWidget {
                                             SizedBox(
                                               height: 250,
                                               child: EasyRichText(
-                                                dItem.sd!.attrVal!.colValue,
+                                                ret(dItem
+                                                    .sd!.attrVal!.colValue),
                                                 selectable: true,
                                                 caseSensitive: false,
                                                 patternList: [
+                                                  EasyRichTextPattern(
+                                                      matchWordBoundaries:
+                                                          false,
+                                                      targetString: dupString(
+                                                          dItem.ld!.attrVal!
+                                                                  .colValue +
+                                                              " " +
+                                                              dItem.sd!.attrVal!
+                                                                  .colValue),
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 16,
+                                                          backgroundColor:
+                                                              Colors.red)),
                                                   EasyRichTextPattern(
                                                       matchWordBoundaries:
                                                           false,
@@ -216,10 +237,24 @@ class MyCustWBScreen extends StatelessWidget {
                                             SizedBox(
                                               height: 250,
                                               child: EasyRichText(
-                                                dItem.ld!.attrVal!.colValue,
+                                                ret(dItem
+                                                    .ld!.attrVal!.colValue),
                                                 selectable: true,
                                                 caseSensitive: false,
                                                 patternList: [
+                                                  EasyRichTextPattern(
+                                                      matchWordBoundaries:
+                                                          false,
+                                                      targetString: dupString(
+                                                          dItem.ld!.attrVal!
+                                                                  .colValue +
+                                                              " " +
+                                                              dItem.sd!.attrVal!
+                                                                  .colValue),
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          backgroundColor:
+                                                              Colors.red)),
                                                   EasyRichTextPattern(
                                                       matchWordBoundaries:
                                                           false,
@@ -1158,8 +1193,7 @@ class _RowChipsState extends State<RowChips> {
                     dbProv: dbProv,
                     context: context,
                     title: "Save Item",
-                    content:
-                        "Would you like to Save the changes to this item?",
+                    content: "Would you like to Save the changes to this item?",
                     met2: reload);
 
                 // Navigator.push(

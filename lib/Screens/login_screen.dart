@@ -24,15 +24,19 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _un = TextEditingController();
   final TextEditingController _pwd = TextEditingController();
   String dropdownvalue = "Choose Category";
+  String dropdownvalue1 = "Choose PTG";
 
-  var categories = [
-    'Choose Category',
-    'Apparel',
-    'Furniture',
-    'F&B',
-    'Home',
-    'Books',
-  ];
+  // var categories = [
+  //   'Choose Category',
+  //   'Apparel',
+  //   'Furniture',
+  //   'F&B',
+  //   'Home',
+  //   'Books',
+  // ];
+
+  var categories = dropPTG.keys.toList();
+  var ptgLst = ["Choose PTG"];
 
   @override
   void initState() {
@@ -73,11 +77,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: MediaQuery.of(context).size.height * 0.8,
                       width: MediaQuery.of(context).size.width * 0.305,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.2,
+                            height: MediaQuery.of(context).size.height * 0.05,
                           ),
                           Text(version),
                           const SizedBox(height: 20),
@@ -92,45 +96,87 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: const TextStyle(color: Colors.red),
                           ),
                           const SizedBox(height: 5),
-                          DropdownButton(
-                              hint: const Text("Choose you category"),
-                              value: dropdownvalue,
-                              items: categories.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownvalue = newValue!;
-                                });
-                              }),
+                          Column(
+                            children: [
+                              //choose category dropdown
+                              SizedBox(
+                                width: 250,
+                                child: DropdownButton(
+                                    isExpanded: true,
+                                    hint: const Text("Choose your category"),
+                                    value: dropdownvalue,
+                                    items: categories.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        dropdownvalue = newValue!;
+                                        dropdownvalue1 = "Choose PTG";
+                                        ptgLst = dropPTG[newValue]!.split("|");
+                                      });
+                                    }),
+                              ),
+                              const SizedBox(height: 5),
+                              //Choose PTG dropdown
+                              SizedBox(
+                                width: 250,
+                                child: DropdownButton(
+                                    isExpanded: true,
+                                    hint: const Text("Choose PTG"),
+                                    value: dropdownvalue1,
+                                    items: ptgLst.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        dropdownvalue1 = newValue!;
+                                      });
+                                    }),
+                              ),
+                            ],
+                          ),
                           const SizedBox(height: 20),
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.green,
                               ),
                               onPressed: () async {
-                                if (pswdChk(_un.text, _pwd.text)) {
-                                  var ptProv = Provider.of<PTProvider>(context,
-                                      listen: false);
-                                  await ptProv.getCsv(dropdownvalue);
+                                if (dropdownvalue != "Choose Category" &&
+                                    dropdownvalue1 != "Choose PTG") {
+                                  if (pswdChk(_un.text, _pwd.text)) {
+                                    var ptProv = Provider.of<PTProvider>(
+                                        context,
+                                        listen: false);
+                                    await ptProv.getCsv(
+                                        dropdownvalue, dropdownvalue1);
 
-                                  configDB.put("lStatus", _un.text);
-                                  Navigator.of(context).pop();
-                                  _un.text = "";
-                                  _pwd.text = "";
-                                  Navigator.push(
-                                      context,
-                                      PageTransition(
-                                          type: PageTransitionType.bottomToTop,
-                                          child: const MyHomePage()));
-                                  //html.window.location.reload();
+                                    configDB.put("lStatus", _un.text);
+                                    Navigator.of(context).pop();
+                                    _un.text = "";
+                                    _pwd.text = "";
+                                    Navigator.push(
+                                        context,
+                                        PageTransition(
+                                            type:
+                                                PageTransitionType.bottomToTop,
+                                            child: const MyHomePage()));
+                                    //html.window.location.reload();
+                                  } else {
+                                    setState(() {
+                                      erMsg =
+                                          "Incorrect Associate ID & Password combinantion ";
+                                    });
+                                  }
                                 } else {
                                   setState(() {
                                     erMsg =
-                                        "Incorrect Associate ID & Password combinantion ";
+                                        "Kindly select the correct Category & PTG ";
                                   });
                                 }
                               },

@@ -17,6 +17,8 @@ import 'package:wm_workbench/theme.dart';
 import 'Screens/custom_table.dart';
 import 'Widgets/custdrawer.dart';
 
+
+//creating 3 hive Boxed
 late Box<MainDB> mainDB;
 late Box<String> configDB;
 late Box<PtDB> ptDB;
