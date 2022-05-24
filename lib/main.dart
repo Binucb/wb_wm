@@ -17,7 +17,6 @@ import 'package:wm_workbench/theme.dart';
 import 'Screens/custom_table.dart';
 import 'Widgets/custdrawer.dart';
 
-
 //creating 3 hive Boxed
 late Box<MainDB> mainDB;
 late Box<String> configDB;
@@ -72,76 +71,79 @@ class MyHomePage extends StatelessWidget {
     //var provider = Provider.of<ProviderOne>(context, listen: false);
     //provider.chgWBScreen(false);
 
-    return Scaffold(
-      drawer: const DrawerCustom(),
-      appBar: CustAppBar(),
-      body: (db.dataLoading)
-          ? SingleChildScrollView(
-              child: Column(
-                children: [
-                  ValueListenableBuilder<Box<MainDB>>(
-                      valueListenable: mainDB.listenable(),
-                      builder: (context, box, widget) {
-                        // print("============");
-                        // print(configDB.get("stCol"));
-                        // print(configDB.get("ptCol"));
-                        // print(configDB.get("idCol"));
+    return WillPopScope(
+      onWillPop: () async => true,
+      child: Scaffold(
+        drawer: const DrawerCustom(),
+        appBar: CustAppBar(),
+        body: (db.dataLoading)
+            ? SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ValueListenableBuilder<Box<MainDB>>(
+                        valueListenable: mainDB.listenable(),
+                        builder: (context, box, widget) {
+                          // print("============");
+                          // print(configDB.get("stCol"));
+                          // print(configDB.get("ptCol"));
+                          // print(configDB.get("idCol"));
 
-                        //db.changeFlMap(box.toMap());
+                          //db.changeFlMap(box.toMap());
 
-                        //print("Inside valueListenable - ${box.toMap().length}");
-                        //print(
-                        //"Inside valueListenable - ${box.getAt(0)!.itemDetails![0]}");
+                          //print("Inside valueListenable - ${box.toMap().length}");
+                          //print(
+                          //"Inside valueListenable - ${box.getAt(0)!.itemDetails![0]}");
 
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // ElevatedButton(
-                            //     onPressed: () {},
-                            //     child: Text("${box.toMap().length}")),
-                            CustomTable(
-                              flMap: box.toMap(),
-                              lst: box.values.toList(),
-                              idCol: int.parse(configDB.get("idCol")!),
-                              ptCol: int.parse(configDB.get("ptCol")!),
-                              stCol: int.parse(configDB.get("stCol")!),
-                              ahtCol: int.parse(configDB.get("tmCol")!),
-                            )
-                          ],
-                        );
-                        // FutureBuilder(
-                        //   future: db.getitmDisp(),
-                        //   builder: (BuildContext ctx, AsyncSnapshot snapshot) {
-                        //     // Checking if future is resolved or not
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // ElevatedButton(
+                              //     onPressed: () {},
+                              //     child: Text("${box.toMap().length}")),
+                              CustomTable(
+                                flMap: box.toMap(),
+                                lst: box.values.toList(),
+                                idCol: int.parse(configDB.get("idCol")!),
+                                ptCol: int.parse(configDB.get("ptCol")!),
+                                stCol: int.parse(configDB.get("stCol")!),
+                                ahtCol: int.parse(configDB.get("tmCol")!),
+                              )
+                            ],
+                          );
+                          // FutureBuilder(
+                          //   future: db.getitmDisp(),
+                          //   builder: (BuildContext ctx, AsyncSnapshot snapshot) {
+                          //     // Checking if future is resolved or not
 
-                        //     // If we got an error
-                        //     if (snapshot.hasError) {
-                        //       return Center(
-                        //         child: Text(
-                        //           '${snapshot.error} occured',
-                        //           style: const TextStyle(fontSize: 18),
-                        //         ),
-                        //       );
+                          //     // If we got an error
+                          //     if (snapshot.hasError) {
+                          //       return Center(
+                          //         child: Text(
+                          //           '${snapshot.error} occured',
+                          //           style: const TextStyle(fontSize: 18),
+                          //         ),
+                          //       );
 
-                        //       // if we got our data
-                        //     } else if (snapshot.hasData) {
-                        //       // Extracting data from snapshot object
+                          //       // if we got our data
+                          //     } else if (snapshot.hasData) {
+                          //       // Extracting data from snapshot object
 
-                        //       return CustomTable(lst: snapshot.data);
-                        //     }
+                          //       return CustomTable(lst: snapshot.data);
+                          //     }
 
-                        //     // Displaying LoadingSpinner to indicate waiting state
-                        //     return const Center(
-                        //       child: CircularProgressIndicator(),
-                        //     );
-                        //   },
-                        // );
-                      })
-                  // (mainDB.keys.isNotEmpty) ? const PieChart() : const SizedBox()
-                ],
-              ),
-            )
-          : const Center(child: Text("Kindly upload the inflow file")),
+                          //     // Displaying LoadingSpinner to indicate waiting state
+                          //     return const Center(
+                          //       child: CircularProgressIndicator(),
+                          //     );
+                          //   },
+                          // );
+                        })
+                    // (mainDB.keys.isNotEmpty) ? const PieChart() : const SizedBox()
+                  ],
+                ),
+              )
+            : const Center(child: Text("Kindly upload the inflow file")),
+      ),
     );
   }
 }

@@ -85,6 +85,7 @@ class DrawerCustom extends StatelessWidget {
           // }, "Change Dark/Light Theme"),
           custDrawer(context, Icons.power_settings_new, () async {
             await configDB.put("lStatus", "");
+            _ab.chgWBScreen(false);
             Navigator.pop(context);
 
             Navigator.pushReplacement(

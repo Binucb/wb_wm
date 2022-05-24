@@ -40,12 +40,15 @@ class _WBScreenState extends State<WBScreen> {
       debugShowCheckedModeBanner: false,
       title: projectName,
       theme: ProjectTheme.light(),
-      home: Scaffold(
-          drawer: const DrawerCustom(),
-          appBar: CustAppBar(),
-          body: (db.item.itemID != "")
-              ? const MyCustWBScreen()
-              : const Center(child: Text("Loading.."))),
+      home: WillPopScope(
+        onWillPop: () async => true,
+        child: Scaffold(
+            drawer: const DrawerCustom(),
+            appBar: CustAppBar(),
+            body: (db.item.itemID != "")
+                ? const MyCustWBScreen()
+                : const Center(child: Text("Loading.."))),
+      ),
     );
   }
 }

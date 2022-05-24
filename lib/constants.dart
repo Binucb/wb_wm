@@ -1,5 +1,5 @@
 String projectName = "Vantage - Workbench";
-String version = "Version 1.4.19052211";
+String version = "Version 1.4.20052217";
 
 List<String> fetchURL(String text) {
   List<String> urlList = [];
@@ -94,12 +94,14 @@ String removeAllHtmlTags(String htmlText) {
 
 List<String> dupString(String text1) {
   text1 = removeAllHtmlTags(text1);
-  text1 = remCommonWords(text1);
+  //text1 = remCommonWords(text1);
   List<String> tst = [];
   List<String> sent = text1.split(".");
 
   for (String sen in sent) {
-    List<String> txt = sen.split(" ");
+    List<String> txt = threeWord(sen);
+    //sen.split(" ");
+
     for (String wrd in txt) {
       if (wrd != "" && wrd != " ") {
         if (countOccurences(text1, wrd) >= 2 && wrd.length >= 4) {
@@ -116,20 +118,38 @@ List<String> dupString(String text1) {
   //     tst.remove(wrd);
   //   }
   // }
-  // print(tst);
 
   return tst;
 }
 
+List<String> threeWord(String txt) {
+  txt = txt.replaceAll("  ", " ");
+  txt = txt.replaceAll("  ", " ");
+  txt = txt.trim().toLowerCase();
+  List<String> rs = [];
+  List<String> sTxt = txt.split(" ");
+
+  for (int i = 0; i < sTxt.length - 2; i++) {
+    String newCombo = "${sTxt[i]} ${sTxt[i + 1]} ${sTxt[i + 2]}";
+    newCombo.replaceAll("  ", " ");
+    //print("newCombo: $newCombo");
+    rs.add(newCombo);
+    newCombo = "";
+  }
+
+  return rs;
+}
+
 int countOccurences(String text, String wrd) {
   int count = 0;
-  text = text.replaceAll(".", " ");
-  List<String> wrdList = text.toLowerCase().split(" ");
-  for (String wd in wrdList) {
-    if (wd == wrd) {
-      count++;
-    }
-  }
+  text = text.toLowerCase();
+  //text = text.replaceAll(".", " ");
+  int initCount = text.length;
+
+  String newSen = text.replaceAll(wrd, "");
+  int newCount = newSen.length;
+
+  count = ((initCount - newCount) ~/ wrd.length).toInt();
 
   return count;
 }

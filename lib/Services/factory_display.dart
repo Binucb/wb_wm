@@ -143,32 +143,36 @@ List<Attribute> retAttr(String? lst, Requirement? knd, List<MyColumn>? colist,
   //print(lst);
   for (String att in lstString) {
     int col = lstrH!.indexOf(att);
-    Attribute attr = Attribute();
-    attr.req = knd;
-    attr.attrVal = colist![col];
+    if (col > 0) {
+      Attribute attr = Attribute();
+      attr.req = knd;
+      attr.attrVal = colist![col];
 
-    attr.err = [];
-    if (colist[col + 1].header!.toLowerCase().contains("op_")) {
-      //print(col);
-      attr.opVal = colist[col + 1];
-      attr.decCol = colist[col + 2];
-      attr.errCode = colist[col + 4];
-      attr.comments = colist[col + 6];
-      attr.opCom = colist[col + 7];
-      attr.cfCol = colist[col + 8];
-      //print("CFCol: ${attr.cfCol!.colNum}");
+      attr.err = [];
+      if (colist[col + 1].header!.toLowerCase().contains("op_")) {
+        //print(col);
+        attr.opVal = colist[col + 1];
+        attr.decCol = colist[col + 2];
+        attr.errCode = colist[col + 4];
+        attr.comments = colist[col + 6];
+        attr.opCom = colist[col + 7];
+        attr.cfCol = colist[col + 8];
+        //print("CFCol: ${attr.cfCol!.colNum}");
+      } else {
+        // print(col);
+        attr.decCol = colist[col + 1];
+        attr.errCode = colist[col + 2];
+        attr.comments = colist[col + 3];
+        attr.opVal = MyColumn(colValue: "NA");
+        attr.opCom = MyColumn(colValue: "NA");
+        attr.cfCol = MyColumn(colValue: "NA");
+        //print("CFCOL:${attr.cfCol!.colNum}");
+      }
+      //print(retList.length);
+      retList.add(attr);
     } else {
-      // print(col);
-      attr.decCol = colist[col + 1];
-      attr.errCode = colist[col + 2];
-      attr.comments = colist[col + 3];
-      attr.opVal = MyColumn(colValue: "NA");
-      attr.opCom = MyColumn(colValue: "NA");
-      attr.cfCol = MyColumn(colValue: "NA");
-      //print("CFCOL:${attr.cfCol!.colNum}");
+      print("$att not found in the inflow sheet");
     }
-    //print(retList.length);
-    retList.add(attr);
   }
 
   return retList;

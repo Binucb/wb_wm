@@ -23,8 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String erMsg = "";
   final TextEditingController _un = TextEditingController();
   final TextEditingController _pwd = TextEditingController();
-  String dropdownvalue = "Choose Category";
+       String dropdownvalue = "Choose Category";
   String dropdownvalue1 = "Choose PTG";
+ 
 
   // var categories = [
   //   'Choose Category',
@@ -38,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var categories = dropPTG.keys.toList();
   var ptgLst = ["Choose PTG"];
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -46,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     //var provider = Provider.of<ProviderOne>(context);
     //var theme = Provider.of<ThemeProvider>(context);
     //var ab = Provider.of<AppBarProvider>(context, listen: false);

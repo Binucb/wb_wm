@@ -44,11 +44,11 @@ class _CustAppBarState extends State<CustAppBar> {
                 child: ElevatedButton.icon(
                     label: const Text("Upload"),
                     onPressed: () async {
-                      await customalert(
+                      await customUpload(
                           context: context,
                           title: "File upload",
                           content:
-                              "Kindly upload the new workfile to the workbench. \nOld files will be deleted from the Database",
+                              "Kindly upload the new workfile to the workbench. \nOld files will be deleted from the Database. ",
                           met2: upload);
                     },
                     icon: const Icon(
@@ -71,26 +71,26 @@ class _CustAppBarState extends State<CustAppBar> {
                     )),
               ),
 
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-                child: IconButton(
-                  onPressed: () async {
-                    // var ptProv =
-                    //     Provider.of<PTProvider>(context, listen: false);
-                    // ptProv.getCsv();
-                    // await customalert(
-                    //     context: context,
-                    //     title: "Config File upload",
-                    //     content:
-                    //         "Would you like update the config file for the category. \nNote:Old files will be deleted from the Database",
-                    //     met2: uploadPT);
-                  },
-                  icon: const Icon(
-                    Icons.post_add_outlined,
-                  ),
-                  color: Colors.white,
-                ),
-              )
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+              //   child: IconButton(
+              //     onPressed: () async {
+              //       // var ptProv =
+              //       //     Provider.of<PTProvider>(context, listen: false);
+              //       // ptProv.getCsv();
+              //       // await customalert(
+              //       //     context: context,
+              //       //     title: "Config File upload",
+              //       //     content:
+              //       //         "Would you like update the config file for the category. \nNote:Old files will be deleted from the Database",
+              //       //     met2: uploadPT);
+              //     },
+              //     icon: const Icon(
+              //       Icons.post_add_outlined,
+              //     ),
+              //     color: Colors.white,
+              //   ),
+              // )
               // IconButton(
               //     onPressed: () {
               //       provider.changeTheme();
@@ -118,7 +118,10 @@ class _CustAppBarState extends State<CustAppBar> {
             ],
       title: Row(
         children: [
-          Text(projectName),
+          Text(
+            projectName,
+            style: const TextStyle(fontSize: 16),
+          ),
           (Provider.of<AppBarProvider>(context, listen: false).workbenchScreen!)
               ? Row(
                   children: [

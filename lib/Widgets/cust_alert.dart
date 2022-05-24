@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wm_workbench/Provider/provider.dart';
+import 'package:wm_workbench/Screens/choose_cat_ptg.dart';
 import 'package:wm_workbench/main.dart';
 import 'package:wm_workbench/models/wb_model.dart';
 
@@ -45,6 +46,141 @@ customalert(
       );
     },
   );
+}
+
+customUpload(
+    {BuildContext? context, String? title, String? content, Function? met2}) {
+  return showDialog(
+    context: context!,
+    builder: (ctx) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(60, 70, 60, 70),
+        child: Dialog(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Text(
+                  title!,
+                  style: const TextStyle(color: Colors.green, fontSize: 16),
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Text(content!),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ChoosePTG(),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: const Text("Cancel"),
+                  ),
+                  const SizedBox(
+                    width: 32,
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      Navigator.of(ctx).pop();
+                      await met2!(context);
+                    },
+                    child: const Text("Choose  File to Upload"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+customErrorAlert(BuildContext? context, List<String> err) {
+  return showDialog(
+      context: context!,
+      builder: (ctx) {
+        return Dialog(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const Center(
+                    child: Text(
+                      "Errors!!!",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 300,
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: err.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(err[index]),
+                            );
+                          }),
+                    ),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                      },
+                      child: const Text("Ok"))
+                ],
+              ),
+            ),
+          ),
+        );
+      });
+}
+
+customCat(BuildContext? context) {
+  return showDialog(
+      context: context!,
+      builder: (ctx) {
+        return Dialog(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const Center(
+                    child: Text(
+                      "Errors!!!",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 300,
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: ChoosePTG(),
+                    ),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                      },
+                      child: const Text("Ok"))
+                ],
+              ),
+            ),
+          ),
+        );
+      });
 }
 
 customalert1(

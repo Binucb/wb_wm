@@ -9,6 +9,7 @@ import 'package:wm_workbench/main.dart';
 import 'package:wm_workbench/models/wb_model.dart';
 import 'package:wm_workbench/theme.dart';
 
+import '../Services/attribute_errors.dart';
 import '../constants.dart';
 
 class MyCustWBScreen extends StatelessWidget {
@@ -140,6 +141,8 @@ class MyCustWBScreen extends StatelessWidget {
                                                   EasyRichTextPattern(
                                                       matchWordBoundaries:
                                                           false,
+                                                      hasSpecialCharacters:
+                                                          true,
                                                       targetString: dupString(
                                                           dItem.ld!.attrVal!
                                                                   .colValue +
@@ -148,7 +151,6 @@ class MyCustWBScreen extends StatelessWidget {
                                                                   .colValue),
                                                       style: const TextStyle(
                                                           color: Colors.white,
-                                                          fontSize: 16,
                                                           backgroundColor:
                                                               Colors.red)),
                                                   EasyRichTextPattern(
@@ -1182,19 +1184,25 @@ class _RowChipsState extends State<RowChips> {
           const SizedBox(height: 16),
           ElevatedButton.icon(
               onPressed: () async {
-                var dbProv = Provider.of<DBProvider>(context, listen: false);
-                int stCol = int.parse(configDB.get("stCol")!) + 1;
-                dbProv.saveToDB(stCol, "Completed");
-                dbProv.updateTime(format(stopwatch.elapsed));
+                List<String> fnErr = findErrors(widget.dItem!);
+                if (fnErr.isEmpty) {
+                  var dbProv = Provider.of<DBProvider>(context, listen: false);
+                  int stCol = int.parse(configDB.get("stCol")!) + 1;
+                  dbProv.saveToDB(stCol, "Completed");
+                  dbProv.updateTime(format(stopwatch.elapsed));
 
-                await dbProv.changedl(true);
-                print(stopwatch.elapsed);
-                customalert1(
-                    dbProv: dbProv,
-                    context: context,
-                    title: "Save Item",
-                    content: "Would you like to Save the changes to this item?",
-                    met2: reload);
+                  await dbProv.changedl(true);
+                  print(stopwatch.elapsed);
+                  customalert1(
+                      dbProv: dbProv,
+                      context: context,
+                      title: "Save Item",
+                      content:
+                          "Would you like to Save the changes to this item?",
+                      met2: reload);
+                } else {
+                  customErrorAlert(context, fnErr);
+                }
 
                 // Navigator.push(
                 //     context,

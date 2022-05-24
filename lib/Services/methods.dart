@@ -26,6 +26,7 @@ void download(BuildContext context) async {
 
   int idCol = int.parse(configDB.get("idCol")!);
   int stCol = int.parse(configDB.get("stCol")!);
+  String? fname = configDB.get("fName");
 
   mainDB.values.toList().forEach((ele) {
     if (ele.itemDetails![idCol] != "Item ID" &&
@@ -35,7 +36,7 @@ void download(BuildContext context) async {
       i++;
     }
   });
-  excel.save(fileName: "output.xlsx");
+  excel.save(fileName: fname!);
 }
 
 void reload(BuildContext context) async {
@@ -51,6 +52,9 @@ void upload(BuildContext context) async {
   //waitingalert(context: context, title: "Data Loading Status");
 
   if (picked != null) {
+    configDB.put("fName", picked.names[0]!);
+
+    print("${picked.names[0]}");
     //print(_loading.dataLoading);
     var bytes = picked.files.single.bytes;
 

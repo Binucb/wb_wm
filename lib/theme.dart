@@ -20,18 +20,18 @@ class ProjectTheme {
   // 1
   static TextTheme lightTextTheme = TextTheme(
     bodyText1: GoogleFonts.montserrat(
-      fontSize: 14.0,
+      fontSize: 12.0,
       //fontStyle: FontStyle.italic,
       fontWeight: FontWeight.w500,
       color: accentColor,
     ),
     bodyText2: GoogleFonts.openSans(
-      fontSize: 15.0,
+      fontSize: 13.0,
       //fontWeight: FontWeight.w700,
       color: Colors.black,
     ),
     headline1: GoogleFonts.openSans(
-      fontSize: 32.0,
+      fontSize: 24.0,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     ),
@@ -41,12 +41,12 @@ class ProjectTheme {
       color: Colors.black,
     ),
     headline3: GoogleFonts.openSans(
-      fontSize: 16.0,
+      fontSize: 18.0,
       fontWeight: FontWeight.w600,
       color: Colors.black,
     ),
     headline6: GoogleFonts.openSans(
-      fontSize: 18.0,
+      fontSize: 12.0,
       fontWeight: FontWeight.w600,
       color: Colors.black,
     ),
