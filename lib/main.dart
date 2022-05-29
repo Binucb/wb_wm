@@ -21,6 +21,7 @@ import 'Widgets/custdrawer.dart';
 late Box<MainDB> mainDB;
 late Box<String> configDB;
 late Box<PtDB> ptDB;
+late Box<String> clsDB;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +34,7 @@ Future<void> main() async {
   mainDB = await Hive.openBox<MainDB>('mainDB');
   configDB = await Hive.openBox<String>('configDB');
   ptDB = await Hive.openBox<PtDB>('ptDB');
+  clsDB = await Hive.openBox<String>('clsDB');
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => ProviderOne()),
@@ -60,6 +62,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// TODO: Testing todos
 
 class MyHomePage extends StatelessWidget {
   static const String route = '/homepage';
@@ -72,7 +75,7 @@ class MyHomePage extends StatelessWidget {
     //provider.chgWBScreen(false);
 
     return WillPopScope(
-      onWillPop: () async => true,
+      onWillPop: () async => false,
       child: Scaffold(
         drawer: const DrawerCustom(),
         appBar: CustAppBar(),

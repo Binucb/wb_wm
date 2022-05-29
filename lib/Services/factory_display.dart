@@ -22,6 +22,7 @@ void cnvLsttoDisp(
     col.header = element;
     col.clList = [];
     col.colValue = lstI![i - 1];
+    col.clList = clsDB.get(element, defaultValue: "")!.split("\$");
 
     col.dropDown = [];
     headers.add(element.toLowerCase().toString());
@@ -53,6 +54,7 @@ void cnvLsttoDisp(
   }
 
   List<Attribute> cons = req + opt + con;
+  print("Total count of attribute in display method is ${cons.length}");
 
   disp.reqCount = req.length;
   disp.optCount = opt.length;
@@ -61,10 +63,9 @@ void cnvLsttoDisp(
   List<Attribute>? lst1 = [];
   List<Attribute>? lst2 = [];
   List<Attribute>? lst3 = [];
+  List<Attribute>? lst4 = [];
 
   for (Attribute attr in cons) {
-    print(attr.attrVal!.header);
-
     disp.rwNum = ky;
     disp.itemID = lstI[idCol];
     disp.pt = pt;
@@ -85,7 +86,9 @@ void cnvLsttoDisp(
 
       lst.add(imgurl);
       disp.lstImages = lst;
+      attr.classifier = MyMatch.nomatch;
       lst3.add(attr);
+      lst4.add(attr);
     } else if (attr.attrVal!.header!
         .toLowerCase()
         .contains("secondary image url")) {
@@ -106,31 +109,43 @@ void cnvLsttoDisp(
       }
 
       disp.lstImages!.addAll(imgList);
+      attr.classifier = MyMatch.nomatch;
       lst3.add(attr);
+      lst4.add(attr);
     } else if (attr.opCom!.colValue != "NA") {
       //print("opCom not null: ${attr.opCom!.colValue}");
       if (attr.opCom!.colValue.contains("Content Match")) {
+        attr.classifier = MyMatch.content;
         lst1.add(attr);
+        lst4.add(attr);
       }
-      if (attr.opCom!.colValue.contains("Only Tool Predicted")) {
+      if (attr.opCom!.colValue.contains("Only Tool Predicted") ||
+          attr.opCom!.colValue.contains("Partial Match")) {
+        attr.classifier = MyMatch.partial;
         lst2.add(attr);
+        lst4.add(attr);
       }
 
       if (attr.opCom!.colValue.contains("No Match") ||
           attr.opCom!.colValue.contains("Blank Match") ||
           attr.opCom!.colValue.contains("Outside SOP") ||
           attr.opCom!.colValue.contains("Not Able to Validate")) {
+        attr.classifier = MyMatch.nomatch;
         lst3.add(attr);
+        lst4.add(attr);
       }
-    } else if (attr.opCom!.colValue == "NA") {
+    } else {
       //print("else: ${attr.opCom!.colValue}");
+      attr.classifier = MyMatch.nomatch;
       lst3.add(attr);
+      lst4.add(attr);
     }
   }
 
   disp.lstAttrs1 = lst1;
   disp.lstAttrs2 = lst2;
   disp.lstAttrs3 = lst3;
+  disp.lstAttrs4 = lst4;
 
   var db = Provider.of<DBProvider>(cntxt, listen: false);
   db.changeDispItem(disp);
@@ -157,6 +172,7 @@ List<Attribute> retAttr(String? lst, Requirement? knd, List<MyColumn>? colist,
         attr.comments = colist[col + 6];
         attr.opCom = colist[col + 7];
         attr.cfCol = colist[col + 8];
+
         //print("CFCol: ${attr.cfCol!.colNum}");
       } else {
         // print(col);

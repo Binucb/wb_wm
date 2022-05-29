@@ -74,15 +74,17 @@ List<DataRow> _createRows(BuildContext context, List<MainDB>? lst, int? idCol,
     if (element.itemDetails![idCol!].toLowerCase() != "item id") {
       rowlst.add(DataRow(cells: [
         DataCell(SelectableText(element.itemDetails![idCol]), onTap: () {
+          db.changeList1(0);
           db.chagenRwNum(element.itemDetails![idCol]);
           configDB.put("actID", element.itemDetails![idCol]);
           // print("=============");
           // print(db.flMap!.length);
           // print(element.itemDetails![idCol]);
           db.pullItem(context, db.flMap!, element.itemDetails![idCol]);
-          int? stCol = int.parse(configDB.get("stCol")!);
+          int? stCol = int.parse(configDB.get("stCol")!) + 1;
           print("Status:" + element.itemDetails![stCol]);
-          //db.saveToDB(stCol, "In Progress");
+          print(stCol);
+          db.saveToDB(stCol, "In Progress");
           _loading.setIdPt(
               element.itemDetails![idCol], element.itemDetails![ptCol!]);
           Navigator.push(

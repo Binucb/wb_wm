@@ -23,9 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String erMsg = "";
   final TextEditingController _un = TextEditingController();
   final TextEditingController _pwd = TextEditingController();
-       String dropdownvalue = "Choose Category";
+  String dropdownvalue = "Choose Category";
   String dropdownvalue1 = "Choose PTG";
- 
 
   // var categories = [
   //   'Choose Category',
@@ -39,7 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
   var categories = dropPTG.keys.toList();
   var ptgLst = ["Choose PTG"];
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -48,7 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     //var provider = Provider.of<ProviderOne>(context);
     //var theme = Provider.of<ThemeProvider>(context);
     //var ab = Provider.of<AppBarProvider>(context, listen: false);
@@ -99,89 +96,87 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: const TextStyle(color: Colors.red),
                           ),
                           const SizedBox(height: 5),
-                          Column(
-                            children: [
-                              //choose category dropdown
-                              SizedBox(
-                                width: 250,
-                                child: DropdownButton(
-                                    isExpanded: true,
-                                    hint: const Text("Choose your category"),
-                                    value: dropdownvalue,
-                                    items: categories.map((String items) {
-                                      return DropdownMenuItem(
-                                        value: items,
-                                        child: Text(items),
-                                      );
-                                    }).toList(),
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        dropdownvalue = newValue!;
-                                        dropdownvalue1 = "Choose PTG";
-                                        ptgLst = dropPTG[newValue]!.split("|");
-                                      });
-                                    }),
-                              ),
-                              const SizedBox(height: 5),
-                              //Choose PTG dropdown
-                              SizedBox(
-                                width: 250,
-                                child: DropdownButton(
-                                    isExpanded: true,
-                                    hint: const Text("Choose PTG"),
-                                    value: dropdownvalue1,
-                                    items: ptgLst.map((String items) {
-                                      return DropdownMenuItem(
-                                        value: items,
-                                        child: Text(items),
-                                      );
-                                    }).toList(),
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        dropdownvalue1 = newValue!;
-                                      });
-                                    }),
-                              ),
-                            ],
-                          ),
+                          // Column(
+                          //   children: [
+                          //     //choose category dropdown
+                          //     SizedBox(
+                          //       width: 250,
+                          //       child: DropdownButton(
+                          //           isExpanded: true,
+                          //           hint: const Text("Choose your category"),
+                          //           value: dropdownvalue,
+                          //           items: categories.map((String items) {
+                          //             return DropdownMenuItem(
+                          //               value: items,
+                          //               child: Text(items),
+                          //             );
+                          //           }).toList(),
+                          //           onChanged: (String? newValue) {
+                          //             setState(() {
+                          //               dropdownvalue = newValue!;
+                          //               dropdownvalue1 = "Choose PTG";
+                          //               ptgLst = dropPTG[newValue]!.split("|");
+                          //             });
+                          //           }),
+                          //     ),
+                          //     const SizedBox(height: 5),
+                          //     //Choose PTG dropdown
+                          //     SizedBox(
+                          //       width: 250,
+                          //       child: DropdownButton(
+                          //           isExpanded: true,
+                          //           hint: const Text("Choose PTG"),
+                          //           value: dropdownvalue1,
+                          //           items: ptgLst.map((String items) {
+                          //             return DropdownMenuItem(
+                          //               value: items,
+                          //               child: Text(items),
+                          //             );
+                          //           }).toList(),
+                          //           onChanged: (String? newValue) {
+                          //             setState(() {
+                          //               dropdownvalue1 = newValue!;
+                          //             });
+                          //           }),
+                          //     ),
+                          //   ],
+                          // ),
                           const SizedBox(height: 20),
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.green,
                               ),
                               onPressed: () async {
-                                if (dropdownvalue != "Choose Category" &&
-                                    dropdownvalue1 != "Choose PTG") {
-                                  if (pswdChk(_un.text, _pwd.text)) {
-                                    var ptProv = Provider.of<PTProvider>(
-                                        context,
-                                        listen: false);
-                                    await ptProv.getCsv(
-                                        dropdownvalue, dropdownvalue1);
+                                // if (dropdownvalue != "Choose Category" &&
+                                //     dropdownvalue1 != "Choose PTG") {
+                                if (pswdChk(_un.text, _pwd.text)) {
+                                  var ptProv = Provider.of<PTProvider>(context,
+                                      listen: false);
+                                  await ptProv.getCsv(
+                                      dropdownvalue, dropdownvalue1);
 
-                                    configDB.put("lStatus", _un.text);
-                                    Navigator.of(context).pop();
-                                    _un.text = "";
-                                    _pwd.text = "";
-                                    Navigator.push(
-                                        context,
-                                        PageTransition(
-                                            type:
-                                                PageTransitionType.bottomToTop,
-                                            child: const MyHomePage()));
-                                    //html.window.location.reload();
-                                  } else {
-                                    setState(() {
-                                      erMsg =
-                                          "Incorrect Associate ID & Password combinantion ";
-                                    });
-                                  }
+                                  configDB.put("lStatus", _un.text);
+                                  Navigator.of(context).pop();
+                                  _un.text = "";
+                                  _pwd.text = "";
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          type: PageTransitionType.bottomToTop,
+                                          child: const MyHomePage()));
+                                  //html.window.location.reload();
                                 } else {
                                   setState(() {
                                     erMsg =
-                                        "Kindly select the correct Category & PTG ";
+                                        "Incorrect Associate ID & Password combinantion ";
                                   });
                                 }
+                                // } else {
+                                //   setState(() {
+                                //     erMsg =
+                                //         "Kindly select the correct Category & PTG ";
+                                //   });
+                                // }
                               },
                               child: const Padding(
                                 padding: EdgeInsets.fromLTRB(25, 0, 25, 0),

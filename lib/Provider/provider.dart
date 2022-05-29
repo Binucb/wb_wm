@@ -96,6 +96,20 @@ class PTProvider extends ChangeNotifier {
     addtoPTBox(tstList);
   }
 
+  getClsCsv(String cat, String ptg) async {
+    print("I am called");
+    final myData = await rootBundle.loadString("assets/csv/csv_cls.csv");
+    List<List<dynamic>> rowsAsListOfValues =
+        const CsvToListConverter().convert(myData);
+    print("am I till this");
+    List<List<dynamic>> tstList = rowsAsListOfValues
+        .where((element) => element[0] == cat && element[1] == ptg)
+        .toList();
+    //print(tstList);
+
+    addtoClsBox(tstList);
+  }
+
   List<String> get attrWrds {
     List<String> _lst;
 
@@ -150,43 +164,40 @@ class PTProvider extends ChangeNotifier {
 
       await ptDB.put(element[2]!, ls);
     }
-    print("from PT method");
+    //print("from PT method");
     //print(ptCnt);
     notifyListeners();
+  }
+
+  addtoClsBox(List<List<dynamic>> frmExcel) async {
+    clsDB.clear();
+
+    for (var element in frmExcel) {
+      await clsDB.put(element[2], element[4]);
+    }
   }
 }
 
 class AttProvider extends ChangeNotifier {
   //Attribute change
-  int _listNo = 1;
-  int get listNo => _listNo;
-  var db = DBProvider();
-  List<Attribute>? _showList1 = [];
-  List<Attribute>? get showList1 => _showList1;
-  changeList1(List<Attribute>? val, int val1) {
-    _showList1 = [];
-    _showList1 = List.from(val!.toList());
-    _listNo = val1;
-    notifyListeners();
-  }
 
-  List<Attribute>? _showList2 = [];
-  List<Attribute>? get showList2 => _showList2;
-  changeList2(List<Attribute>? val, int val1) {
-    _showList2 = [];
-    _showList2 = List.from(val!.toList());
-    _listNo = val1;
-    notifyListeners();
-  }
+  // List<Attribute>? _showList2 = [];
+  // List<Attribute>? get showList2 => _showList2;
+  // changeList2(List<Attribute>? val, int val1) {
+  //   _showList2 = [];
+  //   _showList2 = List.from(val!.toList());
+  //   _listNo = val1;
+  //   notifyListeners();
+  // }
 
-  List<Attribute>? _showList3 = [];
-  List<Attribute>? get showList3 => _showList3;
-  changeList3(List<Attribute>? val, int val1) {
-    _showList3 = [];
-    _showList3 = List.from(val!.toList());
-    _listNo = val1;
-    notifyListeners();
-  }
+  // List<Attribute>? _showList3 = [];
+  // List<Attribute>? get showList3 => _showList3;
+  // changeList3(List<Attribute>? val, int val1) {
+  //   _showList3 = [];
+  //   _showList3 = List.from(val!.toList());
+  //   _listNo = val1;
+  //   notifyListeners();
+  // }
 
   List<int> get cntStatus => _cntStatus;
 
@@ -212,6 +223,37 @@ class DBProvider extends ChangeNotifier {
       }
     }
     return _dataLoading;
+  }
+
+  int _listNo = 0;
+  int get listNo => _listNo;
+
+  List<Attribute>? _showList1 = [];
+  List<Attribute>? get showList1 {
+    if (_listNo == 0) {
+      return item.lstAttrs4!;
+    } else if (_listNo == 1) {
+      return item.lstAttrs4!
+          .where((element) => element.classifier == MyMatch.content)
+          .toList();
+    } else if (_listNo == 2) {
+      return item.lstAttrs4!
+          .where((element) => element.classifier == MyMatch.partial)
+          .toList();
+    } else if (_listNo == 3) {
+      return item.lstAttrs4!
+          .where((element) => element.classifier == MyMatch.nomatch)
+          .toList();
+    } else if (_listNo == 4) {
+      return item.lstAttrs4!
+          .where((element) => element.err!.isNotEmpty)
+          .toList();
+    }
+  }
+
+  changeList1(int val1) {
+    _listNo = val1;
+    notifyListeners();
   }
 
   Map<dynamic, MainDB>? _flMap = Map();
@@ -294,6 +336,7 @@ class DBProvider extends ChangeNotifier {
     mDB.rwNm = 1;
     var stCol = configDB.get("stCol");
     var actID = configDB.get("actID");
+    print("Status from saveto Db is $stCol");
 
     MainDB? lst = mainDB.get(actID);
 

@@ -1,5 +1,5 @@
 String projectName = "Vantage - Workbench";
-String version = "Version 1.4.20052217";
+String version = "Version 1.5.25052211";
 
 List<String> fetchURL(String text) {
   List<String> urlList = [];
@@ -53,7 +53,7 @@ Map<String, String> dropDD = {
   "main image url":
       ",-|,Contains Watermark (Fail),Low Quality/Blurred Image (Fail),Image Unavailable on the URL (Fail),Cropped Images (Fail),No URL (Fail),Dropbox/Google Drive Images (Fail),Lifestyle/Label/Scaling Images (Fail),Mismatch with Base Data (Fail)",
   "correct product type":
-      ",Missing/Insufficient Base Data,Different Category PT,Not Part of Closed List,Re-tagged to Correct PT,Image-Content Mismatch|,Missing/Insufficient Base Data,Different Category PT,Not Part of Closed List,Re-tagged to Correct PT,Image-Content Mismatch",
+      ",-|,Re-tagged to Correct PT (Fail),Image-Content Mismatch (Fail),Different Category PT (Fail),Missing Information (Fail),Not Part of Closed List (Fail)",
   "correct product name":
       ",Added Brand,Formatting Errors Fixed,Casing Issues Fixed,Removed special characters/redundant text,Title Structure Fixed,Grammatical Error/Misspelling Fixed|,Missing Information (Fail),Insufficient Character Count (Fail),Missing Key Attributes (Fail)",
   "product short description":

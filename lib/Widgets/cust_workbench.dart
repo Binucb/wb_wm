@@ -21,6 +21,7 @@ class MyCustWBScreen extends StatelessWidget {
     var prov1 = Provider.of<ThemeProvider>(context, listen: false).appTheme;
     var prov = Provider.of<AttProvider>(context, listen: true);
     var dProv = Provider.of<DBProvider>(context, listen: true);
+
     Display? dItem = dProv.item;
     // print("++++++++++++++++++");
     // print(dItem);
@@ -39,310 +40,294 @@ class MyCustWBScreen extends StatelessWidget {
             child: Container(
               height: ht,
               width: wt,
-              child: RawScrollbar(
-                thumbColor: accentColor,
-                radius: const Radius.circular(20),
-                thickness: 5,
-                child: SingleChildScrollView(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    //crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: [
-                          CustCard(
-                              //pn
-                              ht: ht * 0.08,
-                              wt: wt * 0.665,
-                              wd: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  // SelectableText(
-                                  //   "Product Name : ",
-                                  //   style: Theme.of(context).textTheme.bodyText1,
-                                  // ),
-                                  EasyRichText(
-                                    dItem.pn!,
-                                    selectable: true,
-                                    caseSensitive: false,
-                                    patternList: [
-                                      EasyRichTextPattern(
-                                          matchWordBoundaries: false,
-                                          targetString: context
-                                              .watch<BackEndData>()
-                                              .lstWrds,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              backgroundColor: Colors.blue)),
-                                      EasyRichTextPattern(
-                                          matchWordBoundaries: false,
-                                          targetString: dupString(dItem.pn!),
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              backgroundColor: Colors.red)),
-                                      EasyRichTextPattern(
-                                          matchWordBoundaries: false,
-                                          targetString: context
-                                              .watch<PTProvider>()
-                                              .attrWrds,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              backgroundColor: Colors.green)),
-                                    ],
-                                  ),
+              child: SingleChildScrollView(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        CustCard(
+                            //pn
+                            ht: ht * 0.08,
+                            wt: wt * 0.665,
+                            wd: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // SelectableText(
+                                //   "Product Name : ",
+                                //   style: Theme.of(context).textTheme.bodyText1,
+                                // ),
+                                EasyRichText(
+                                  dItem.pn!,
+                                  selectable: true,
+                                  caseSensitive: false,
+                                  patternList: [
+                                    EasyRichTextPattern(
+                                        matchWordBoundaries: false,
+                                        targetString: context
+                                            .watch<BackEndData>()
+                                            .lstWrds,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            backgroundColor: Colors.blue)),
+                                    EasyRichTextPattern(
+                                        matchWordBoundaries: false,
+                                        targetString: dupString(dItem.pn!),
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            backgroundColor: Colors.red)),
+                                    EasyRichTextPattern(
+                                        matchWordBoundaries: false,
+                                        targetString: context
+                                            .watch<PTProvider>()
+                                            .attrWrds,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            backgroundColor: Colors.green)),
+                                  ],
+                                ),
 
-                                  // SelectableText(
-                                  //   dItem!.pn!,
-                                  //   style: Theme.of(context).textTheme.bodyText2,
-                                  // ),
-                                ],
-                              )),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                children: [
-                                  //sd
-                                  Row(
-                                    children: [
-                                      CustCard(
-                                        //sd
-                                        ht: ht * 0.62,
-                                        wt: wt * 0.33,
+                                // SelectableText(
+                                //   dItem!.pn!,
+                                //   style: Theme.of(context).textTheme.bodyText2,
+                                // ),
+                              ],
+                            )),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                //sd
+                                Row(
+                                  children: [
+                                    CustCard(
+                                      //sd
+                                      ht: ht * 0.62,
+                                      wt: wt * 0.33,
 
-                                        wd: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                HeaderWidget(
-                                                  txt: dItem
-                                                      .sd!.attrVal!.header!,
-                                                  dItem: dItem,
-                                                ),
-                                                Text(
-                                                  "${dItem.sd!.attrVal!.colValue.split(" ").length} words",
-                                                  style: const TextStyle(
-                                                      color: Colors.redAccent,
-                                                      fontSize: 10),
-                                                ),
+                                      wd: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              HeaderWidget(
+                                                txt: dItem.sd!.attrVal!.header!,
+                                                dItem: dItem,
+                                              ),
+                                              Text(
+                                                "${dItem.sd!.attrVal!.colValue.split(" ").length} words",
+                                                style: const TextStyle(
+                                                    color: Colors.redAccent,
+                                                    fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+
+                                          const SizedBox(height: 0.6),
+                                          SizedBox(
+                                            height: 250,
+                                            child: EasyRichText(
+                                              ret(dItem.sd!.attrVal!.colValue),
+                                              selectable: true,
+                                              caseSensitive: false,
+                                              patternList: [
+                                                EasyRichTextPattern(
+                                                    matchWordBoundaries: false,
+                                                    hasSpecialCharacters: true,
+                                                    targetString: dupString(
+                                                        dItem.ld!.attrVal!
+                                                                .colValue +
+                                                            " " +
+                                                            dItem.sd!.attrVal!
+                                                                .colValue),
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.red)),
+                                                EasyRichTextPattern(
+                                                    matchWordBoundaries: false,
+                                                    targetString: context
+                                                        .watch<BackEndData>()
+                                                        .lstWrds,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.blue)),
+                                                EasyRichTextPattern(
+                                                    matchWordBoundaries: false,
+                                                    targetString: context
+                                                        .watch<PTProvider>()
+                                                        .attrWrds,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.green)),
                                               ],
                                             ),
-
-                                            const SizedBox(height: 0.6),
-                                            SizedBox(
-                                              height: 250,
-                                              child: EasyRichText(
-                                                ret(dItem
-                                                    .sd!.attrVal!.colValue),
-                                                selectable: true,
-                                                caseSensitive: false,
-                                                patternList: [
-                                                  EasyRichTextPattern(
-                                                      matchWordBoundaries:
-                                                          false,
-                                                      hasSpecialCharacters:
-                                                          true,
-                                                      targetString: dupString(
-                                                          dItem.ld!.attrVal!
-                                                                  .colValue +
-                                                              " " +
-                                                              dItem.sd!.attrVal!
-                                                                  .colValue),
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          backgroundColor:
-                                                              Colors.red)),
-                                                  EasyRichTextPattern(
-                                                      matchWordBoundaries:
-                                                          false,
-                                                      targetString: context
-                                                          .watch<BackEndData>()
-                                                          .lstWrds,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          backgroundColor:
-                                                              Colors.blue)),
-                                                  EasyRichTextPattern(
-                                                      matchWordBoundaries:
-                                                          false,
-                                                      targetString: context
-                                                          .watch<PTProvider>()
-                                                          .attrWrds,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          backgroundColor:
-                                                              Colors.green)),
-                                                ],
-                                              ),
-                                            ), // SelectableText(
-                                            //     dItem!.sd!.attrVal!.colValue),
-                                            Expanded(
-                                                child: Align(
-                                                    alignment: FractionalOffset
-                                                        .bottomCenter,
-                                                    child: CustBox(
-                                                      attr: dItem.sd,
-                                                      key: key,
-                                                      headerString: dItem
-                                                          .sd!.attrVal!.header!,
-                                                      errCol: dItem
-                                                          .sd!.decCol!.colNum,
-                                                      erCodCol: dItem
-                                                          .sd!.errCode!.colNum,
-                                                      comCol: dItem
-                                                          .sd!.comments!.colNum,
-                                                      errVal: dItem
-                                                          .sd!.decCol!.colValue,
-                                                      erCodVal: dItem.sd!
-                                                          .errCode!.colValue,
-                                                      comVal: dItem.sd!
-                                                          .comments!.colValue,
-                                                    ))),
-                                          ],
-                                        ),
+                                          ), // SelectableText(
+                                          //     dItem!.sd!.attrVal!.colValue),
+                                          Expanded(
+                                              child: Align(
+                                                  alignment: FractionalOffset
+                                                      .bottomCenter,
+                                                  child: CustBox(
+                                                    attr: dItem.sd,
+                                                    key: key,
+                                                    headerString: dItem
+                                                        .sd!.attrVal!.header!,
+                                                    errCol: dItem
+                                                        .sd!.decCol!.colNum,
+                                                    erCodCol: dItem
+                                                        .sd!.errCode!.colNum,
+                                                    comCol: dItem
+                                                        .sd!.comments!.colNum,
+                                                    errVal: dItem
+                                                        .sd!.decCol!.colValue,
+                                                    erCodVal: dItem
+                                                        .sd!.errCode!.colValue,
+                                                    comVal: dItem
+                                                        .sd!.comments!.colValue,
+                                                  ))),
+                                        ],
                                       ),
-                                      CustCard(
-                                        //ld
-                                        ht: ht * 0.62,
-                                        wt: wt * 0.33,
-                                        wd: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                HeaderWidget(
-                                                  txt: dItem
-                                                      .ld!.attrVal!.header!,
-                                                  dItem: dItem,
-                                                ),
-                                                Text(
-                                                  "${dItem.ld!.attrVal!.colValue.split(" ").length} words",
-                                                  style: const TextStyle(
-                                                      color: Colors.redAccent,
-                                                      fontSize: 10),
-                                                ),
-                                                const Text(
-                                                  "|",
-                                                  style: TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 10),
-                                                ),
-                                                Text(
-                                                  "${"<li>".allMatches(dItem.ld!.attrVal!.colValue).length} Bullet points",
-                                                  style: const TextStyle(
-                                                      color: Colors.redAccent,
-                                                      fontSize: 10),
-                                                ),
+                                    ),
+                                    CustCard(
+                                      //ld
+                                      ht: ht * 0.62,
+                                      wt: wt * 0.33,
+                                      wd: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              HeaderWidget(
+                                                txt: dItem.ld!.attrVal!.header!,
+                                                dItem: dItem,
+                                              ),
+                                              Text(
+                                                "${dItem.ld!.attrVal!.colValue.split(" ").length} words",
+                                                style: const TextStyle(
+                                                    color: Colors.redAccent,
+                                                    fontSize: 10),
+                                              ),
+                                              const Text(
+                                                "|",
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 10),
+                                              ),
+                                              Text(
+                                                "${"<li>".allMatches(dItem.ld!.attrVal!.colValue).length} Bullet points",
+                                                style: const TextStyle(
+                                                    color: Colors.redAccent,
+                                                    fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 0.6),
+                                          SizedBox(
+                                            height: 250,
+                                            child: EasyRichText(
+                                              ret(dItem.ld!.attrVal!.colValue),
+                                              selectable: true,
+                                              caseSensitive: false,
+                                              patternList: [
+                                                EasyRichTextPattern(
+                                                    matchWordBoundaries: false,
+                                                    targetString: dupString(
+                                                        dItem.ld!.attrVal!
+                                                                .colValue +
+                                                            " " +
+                                                            dItem.sd!.attrVal!
+                                                                .colValue),
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.red)),
+                                                EasyRichTextPattern(
+                                                    matchWordBoundaries: false,
+                                                    targetString: context
+                                                        .watch<BackEndData>()
+                                                        .lstWrds,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.blue)),
+                                                EasyRichTextPattern(
+                                                    matchWordBoundaries: false,
+                                                    targetString: context
+                                                        .watch<PTProvider>()
+                                                        .attrWrds,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.green)),
                                               ],
                                             ),
-                                            const SizedBox(height: 0.6),
-                                            SizedBox(
-                                              height: 250,
-                                              child: EasyRichText(
-                                                ret(dItem
-                                                    .ld!.attrVal!.colValue),
-                                                selectable: true,
-                                                caseSensitive: false,
-                                                patternList: [
-                                                  EasyRichTextPattern(
-                                                      matchWordBoundaries:
-                                                          false,
-                                                      targetString: dupString(
-                                                          dItem.ld!.attrVal!
-                                                                  .colValue +
-                                                              " " +
-                                                              dItem.sd!.attrVal!
-                                                                  .colValue),
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          backgroundColor:
-                                                              Colors.red)),
-                                                  EasyRichTextPattern(
-                                                      matchWordBoundaries:
-                                                          false,
-                                                      targetString: context
-                                                          .watch<BackEndData>()
-                                                          .lstWrds,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          backgroundColor:
-                                                              Colors.blue)),
-                                                  EasyRichTextPattern(
-                                                      matchWordBoundaries:
-                                                          false,
-                                                      targetString: context
-                                                          .watch<PTProvider>()
-                                                          .attrWrds,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          backgroundColor:
-                                                              Colors.green)),
-                                                ],
-                                              ),
-                                            ),
+                                          ),
 
-                                            // SelectableText(
-                                            //     dItem!.ld!.attrVal!.colValue),
-                                            Expanded(
-                                                child: Align(
-                                                    alignment: FractionalOffset
-                                                        .bottomCenter,
-                                                    child: CustBox(
-                                                      attr: dItem.ld,
-                                                      key: key,
-                                                      headerString: dItem
-                                                          .ld!.attrVal!.header!,
-                                                      errCol: dItem
-                                                          .ld!.decCol!.colNum,
-                                                      erCodCol: dItem
-                                                          .ld!.errCode!.colNum,
-                                                      comCol: dItem
-                                                          .ld!.comments!.colNum,
-                                                      errVal: dItem
-                                                          .ld!.decCol!.colValue,
-                                                      erCodVal: dItem.ld!
-                                                          .errCode!.colValue,
-                                                      comVal: dItem.ld!
-                                                          .comments!.colValue,
-                                                    ))),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                          CustCard(
-                              //imgs
-                              ht: ht * 0.3,
-                              wt: wt * 0.665,
-                              wd: LstImages(imgUrl: dItem.lstImages!))
-                        ],
-                      ),
-                      //attribute columns
-                      Column(
-                        children: [
-                          CustLst(
-                              //attri
-                              ht: ht * 0.71,
-                              wt: wt * 0.31,
-                              //col: (prov1!) ? Colors.black : Colors.grey.shade200,
-                              wd: ListAttr(bckLst: dItem.lstAttrs1)),
-                          CustCard(
-                            //attri
-                            ht: ht * 0.3,
-                            wt: wt * 0.31,
-                            wd: RowChips(
-                              dItem: dItem,
+                                          // SelectableText(
+                                          //     dItem!.ld!.attrVal!.colValue),
+                                          Expanded(
+                                              child: Align(
+                                                  alignment: FractionalOffset
+                                                      .bottomCenter,
+                                                  child: CustBox(
+                                                    attr: dItem.ld,
+                                                    key: key,
+                                                    headerString: dItem
+                                                        .ld!.attrVal!.header!,
+                                                    errCol: dItem
+                                                        .ld!.decCol!.colNum,
+                                                    erCodCol: dItem
+                                                        .ld!.errCode!.colNum,
+                                                    comCol: dItem
+                                                        .ld!.comments!.colNum,
+                                                    errVal: dItem
+                                                        .ld!.decCol!.colValue,
+                                                    erCodVal: dItem
+                                                        .ld!.errCode!.colValue,
+                                                    comVal: dItem
+                                                        .ld!.comments!.colValue,
+                                                  ))),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
                             ),
+                          ],
+                        ),
+                        CustCard(
+                            //imgs
+                            ht: ht * 0.3,
+                            wt: wt * 0.665,
+                            wd: LstImages(imgUrl: dItem.lstImages!))
+                      ],
+                    ),
+                    //attribute columns
+                    Column(
+                      children: [
+                        CustLst(
+                            //attri
+                            ht: ht * 0.71,
+                            wt: wt * 0.31,
+                            //col: (prov1!) ? Colors.black : Colors.grey.shade200,
+                            wd: ListAttr(bckLst: dItem.lstAttrs4)),
+                        CustCard(
+                          //attri
+                          ht: ht * 0.3,
+                          wt: wt * 0.31,
+                          wd: RowChips(
+                            dItem: dItem,
                           ),
-                        ],
-                      )
-                    ],
-                  ), //main 3 row
-                ),
+                        ),
+                      ],
+                    )
+                  ],
+                ), //main 3 row
               ),
             ),
           )
@@ -624,6 +609,7 @@ class _CustBoxState extends State<CustBox> {
   //String? secDD = " ";
   @override
   Widget build(BuildContext context) {
+    var stopwatch = Stopwatch()..start();
     dd1Val = widget.errVal;
     dd2Val = widget.erCodVal;
     commVal = widget.comVal;
@@ -674,6 +660,8 @@ class _CustBoxState extends State<CustBox> {
                       //print("I am runing when changing Yes decision");
 
                       await db.saveToDB(widget.erCodCol!, "");
+                      db.updateTime(format(stopwatch.elapsed));
+
                       widget.attr!.errCode!.colValue = "";
                     }
 
@@ -687,6 +675,7 @@ class _CustBoxState extends State<CustBox> {
                       erCodValues = [];
 
                       await db.saveToDB(widget.erCodCol!, "");
+                      db.updateTime(format(stopwatch.elapsed));
                       widget.attr!.errCode!.colValue = "";
                     }
 
@@ -696,6 +685,7 @@ class _CustBoxState extends State<CustBox> {
                   setState(() {});
                   //print("saving Col:" + widget.errCol!.toString());
                   db.saveToDB(widget.errCol!, value!);
+                  db.updateTime(format(stopwatch.elapsed));
                   widget.attr!.decCol!.colValue = value;
                 },
                 isExpanded: false,
@@ -756,6 +746,7 @@ class _CustBoxState extends State<CustBox> {
                   if (value == false) {
                     var db = Provider.of<DBProvider>(context, listen: false);
                     db.saveToDB(widget.comCol!, _controller.text);
+                    db.updateTime(format(stopwatch.elapsed));
                     widget.attr!.comments!.colValue = _controller.text;
                   }
                 },
@@ -792,32 +783,36 @@ class ListAttr extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Attribute>? lst1;
-    List<Attribute>? lst2;
-    List<Attribute>? lst3;
+    // List<Attribute>? lst2;
+    // List<Attribute>? lst3;
 
-    var db = Provider.of<AttProvider>(context);
+    var db = Provider.of<DBProvider>(context);
 
     lst1 = List.from(db.showList1!.toList());
+    //print("THe initial lenth of the list is ${bckLst!.length}");
 
-    lst2 = List.from(db.showList2!.toList());
+    //print("THe initial lenth of the list is ${lst1!.length}");
 
-    lst3 = List.from(db.showList3!.toList());
+    // lst2 = List.from(db.showList2!.toList());
+
+    // lst3 = List.from(db.showList3!.toList());
 
     return RawScrollbar(
-      thumbColor: Colors.green,
-      radius: const Radius.circular(20),
-      thickness: 4,
-      child: LstViewCard(
-          lst: (db.listNo == 1)
-              ? (lst1.isNotEmpty)
-                  ? lst1
-                  : bckLst
-              : (db.listNo == 2)
-                  ? lst2
-                  : (db.listNo == 3)
-                      ? lst3
-                      : []),
-    );
+        thumbColor: Colors.green,
+        radius: const Radius.circular(20),
+        thickness: 4,
+        child: LstViewCard(lst: lst1)
+        // LstViewCard(
+        //     lst: (db.listNo == 1)
+        //         ? (lst1.isNotEmpty)
+        //             ? lst1
+        //             : bckLst
+        //         : (db.listNo == 2)
+        //             ? lst2
+        //             : (db.listNo == 3)
+        //                 ? lst3
+        //                 : []),
+        );
   }
 }
 
@@ -947,7 +942,7 @@ class CustAttrCard extends StatelessWidget {
               atCol.addToAttrWrds(txtWrd1 + txtWrd2);
             },
             child: Card(
-              color: reqCol,
+              color: (attr!.err!.isEmpty) ? reqCol : Colors.red,
               child: SizedBox(
                 height: 4,
                 width: MediaQuery.of(context).size.width * 0.3,
@@ -985,8 +980,9 @@ class CustAttrCard extends StatelessWidget {
                         if (value == false) {
                           //print("Save : " + _controller.text);
                           //print("Save : " + attrCol.toString());
-                          db.saveToDB(attrCol!, _controller.text);
-                          attr!.attrVal!.colValue = _controller.text;
+                          db.saveToDB(attrCol!, _controller.text.trim());
+                          print(_controller.text);
+                          attr!.attrVal!.colValue = _controller.text.trim();
                         }
                       },
                       child: TextFormField(
@@ -1105,7 +1101,21 @@ class CustAttrCard extends StatelessWidget {
                         ),
                       )
                     : const SizedBox(),
-                const SizedBox(height: 15)
+                const SizedBox(height: 15),
+                (attr!.err!.isNotEmpty)
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: attr!.err!.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Text(
+                              attr!.err![index],
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          );
+                        })
+                    : const SizedBox(),
               ],
             ),
           ),
@@ -1128,7 +1138,7 @@ class _RowChipsState extends State<RowChips> {
 
   @override
   Widget build(BuildContext context) {
-    var prov = Provider.of<AttProvider>(context, listen: true);
+    var prov = Provider.of<DBProvider>(context, listen: true);
 
     int colNo = prov.listNo;
 
@@ -1136,60 +1146,95 @@ class _RowChipsState extends State<RowChips> {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  prov.changeList1(widget.dItem!.lstAttrs1, 1);
-                },
-                child: Chip(
-                  backgroundColor: (colNo != 1) ? Colors.black54 : accentColor,
-                  label: const Text(
-                    "Content Match",
-                    style: TextStyle(fontSize: 12, color: Colors.white),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    prov.changeList1(0);
+                  },
+                  child: Chip(
+                    backgroundColor:
+                        (colNo != 0) ? Colors.black54 : accentColor,
+                    label: const Text(
+                      "All Attributes",
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              GestureDetector(
-                onTap: () {
-                  prov.changeList2(widget.dItem!.lstAttrs2, 2);
-                  //print("I am called");
-                },
-                child: Chip(
-                  backgroundColor: (colNo != 2) ? Colors.black54 : accentColor,
-                  label: const Text(
-                    "Partial Match",
-                    style: TextStyle(fontSize: 12, color: Colors.white),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {
+                    prov.changeList1(1);
+                  },
+                  child: Chip(
+                    backgroundColor:
+                        (colNo != 1) ? Colors.black54 : accentColor,
+                    label: const Text(
+                      "Content Match",
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              GestureDetector(
-                onTap: () {
-                  prov.changeList3(widget.dItem!.lstAttrs3, 3);
-                },
-                child: Chip(
-                  backgroundColor: (colNo != 3) ? Colors.black54 : accentColor,
-                  label: const Text(
-                    "No Match",
-                    style: TextStyle(fontSize: 12, color: Colors.white),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {
+                    prov.changeList1(2);
+                    //print("I am called");
+                  },
+                  child: Chip(
+                    backgroundColor:
+                        (colNo != 2) ? Colors.black54 : accentColor,
+                    label: const Text(
+                      "Partial Match",
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {
+                    prov.changeList1(3);
+                  },
+                  child: Chip(
+                    backgroundColor:
+                        (colNo != 3) ? Colors.black54 : accentColor,
+                    label: const Text(
+                      "No Match",
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {
+                    prov.changeList1(4);
+                  },
+                  child: Chip(
+                    backgroundColor:
+                        (colNo != 4) ? Colors.black54 : accentColor,
+                    label: const Text(
+                      "Errors",
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
           ElevatedButton.icon(
               onPressed: () async {
-                List<String> fnErr = findErrors(widget.dItem!);
+                List<String> fnErr = findErrors(widget.dItem!, context);
+                var dbProv = Provider.of<DBProvider>(context, listen: false);
+                dbProv.updateTime(format(stopwatch.elapsed));
                 if (fnErr.isEmpty) {
-                  var dbProv = Provider.of<DBProvider>(context, listen: false);
                   int stCol = int.parse(configDB.get("stCol")!) + 1;
+
                   dbProv.saveToDB(stCol, "Completed");
-                  dbProv.updateTime(format(stopwatch.elapsed));
 
                   await dbProv.changedl(true);
                   print(stopwatch.elapsed);
@@ -1201,7 +1246,7 @@ class _RowChipsState extends State<RowChips> {
                           "Would you like to Save the changes to this item?",
                       met2: reload);
                 } else {
-                  customErrorAlert(context, fnErr);
+                  customErrorAlert(context, fnErr, dbProv);
                 }
 
                 // Navigator.push(

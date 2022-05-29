@@ -67,6 +67,7 @@ class _ChoosePTGState extends State<ChoosePTG> {
                       var ptProv =
                           Provider.of<PTProvider>(context, listen: false);
                       await ptProv.getCsv(dropdownvalue, dropdownvalue1);
+                      await ptProv.getClsCsv(dropdownvalue, dropdownvalue1);
                     }
                   }),
             ),

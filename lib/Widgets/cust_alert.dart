@@ -105,45 +105,64 @@ customUpload(
   );
 }
 
-customErrorAlert(BuildContext? context, List<String> err) {
+customErrorAlert(BuildContext? context, List<String> err, var dbProv) {
   return showDialog(
       context: context!,
       builder: (ctx) {
-        return Dialog(
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const Center(
-                    child: Text(
-                      "Errors!!!",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 300,
-                    child: Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: err.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(err[index]),
-                            );
-                          }),
-                    ),
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(ctx);
-                      },
-                      child: const Text("Ok"))
-                ],
-              ),
-            ),
-          ),
+        return AlertDialog(
+          insetPadding: EdgeInsets.zero,
+          content: Text(
+              "${err.length} errors have been found. Please fix and then save item"),
+          actions: [
+            ElevatedButton(
+                onPressed: () async {
+                  await dbProv.changeDispItem(dbProv.item);
+                  Navigator.pop(ctx);
+                },
+                child: const Text("Ok"))
+          ],
+          // Builder(builder: (context) {
+          //   double wd = MediaQuery.of(context).size.width;
+          //   double ht = MediaQuery.of(context).size.height;
+          //   return Container(
+          //     height: ht - 100,
+          //     width: wd - 500,
+          //     child: SingleChildScrollView(
+          //       child: Column(
+          //         children: [
+          //           const Center(
+          //             child: Text(
+          //               "Errors!!!",
+          //               style: TextStyle(color: Colors.red),
+          //             ),
+          //           ),
+          //           SizedBox(
+          //             height: 400,
+          //             child: Padding(
+          //               padding: const EdgeInsets.all(24.0),
+          //               child: ListView.builder(
+          //                   shrinkWrap: true,
+          //                   itemCount: err.length,
+          //                   itemBuilder: (BuildContext context, int index) {
+          //                     return Padding(
+          //                       padding: const EdgeInsets.all(8.0),
+          //                       child: Text(err[index]),
+          //                     );
+          //                   }),
+          //             ),
+          //           ),
+          //           ElevatedButton(
+          //               onPressed: () async {
+          //                 await dbProv.changeDispItem(dbProv.item);
+          //                 Navigator.pop(ctx);
+          //               },
+          //               child: const Text("Ok"))
+          //         ],
+          //       ),
+          //     ),
+          //   );
+          // }),
+          // // child:
         );
       });
 }
@@ -152,30 +171,33 @@ customCat(BuildContext? context) {
   return showDialog(
       context: context!,
       builder: (ctx) {
-        return Dialog(
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const Center(
-                    child: Text(
-                      "Errors!!!",
-                      style: TextStyle(color: Colors.red),
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(32.0, 8, 32, 8),
+          child: Dialog(
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Center(
+                      child: Text(
+                        "Errors!!!",
+                        style: TextStyle(color: Colors.red),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 300,
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: ChoosePTG(),
+                    const SizedBox(
+                      height: 300,
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: ChoosePTG(),
+                      ),
                     ),
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(ctx);
-                      },
-                      child: const Text("Ok"))
-                ],
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(ctx);
+                        },
+                        child: const Text("Ok"))
+                  ],
+                ),
               ),
             ),
           ),
@@ -225,6 +247,7 @@ customalert1(
                 onPressed: () async {
                   print(stCol);
                   await dbProv.saveToDB(stCol, "Completed");
+
                   Navigator.of(ctx).pop();
                   await met2!(context);
                 },

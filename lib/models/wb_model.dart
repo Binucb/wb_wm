@@ -46,6 +46,7 @@ class Attribute {
   MyColumn? opVal;
   MyColumn? opCom;
   MyColumn? cfCol;
+  MyMatch? classifier;
   Requirement? req;
   List<String>? err;
 
@@ -85,3 +86,4 @@ set dropDown(List<String>? val) {
 }
 
 enum Requirement { required, optional, conditional }
+enum MyMatch {content, partial, nomatch}
