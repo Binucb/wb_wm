@@ -2,14 +2,12 @@
 
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wm_workbench/Provider/provider.dart';
 import 'package:wm_workbench/Widgets/cust_alert.dart';
 import 'package:universal_html/html.dart' as html;
-import 'package:wm_workbench/constants.dart';
 import 'package:wm_workbench/main.dart';
 import 'package:wm_workbench/models/maindb.dart';
 
@@ -47,11 +45,19 @@ void reload(BuildContext context) async {
 void upload(BuildContext context) async {
   var picked = await FilePicker.platform.pickFiles();
 
-  showSnackBar(context, "Data loading in progress.Please wait...");
+  //showSnackBar(context, "Data loading in progress.Please wait...");
   //LoadingIndicatorDialog().show(context);
   //waitingalert(context: context, title: "Data Loading Status");
 
   if (picked != null) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (ctx) {
+          return const AlertDialog(
+            title: Text("Data loading...please wait"),
+          );
+        });
     configDB.put("fName", picked.names[0]!);
 
     print("${picked.names[0]}");
@@ -75,7 +81,7 @@ void upload(BuildContext context) async {
 
     //List<List<Data?>> lst = excel.tables["Sheet1"]!.rows;
 
-    showSnackBar(context, "Data loaded successfully");
+    //showSnackBar(context, "Data loaded successfully");
 
     //LoadingIndicatorDialog().dismiss();
     //_loading.changeDataLoading(true);

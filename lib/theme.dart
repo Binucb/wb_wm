@@ -19,33 +19,33 @@ final MaterialColor accentColor = MaterialColor(0xFF0232a0, color);
 class ProjectTheme {
   // 1
   static TextTheme lightTextTheme = TextTheme(
-    bodyText1: GoogleFonts.montserrat(
+    bodyLarge: GoogleFonts.montserrat(
       fontSize: 12.0,
       //fontStyle: FontStyle.italic,
       fontWeight: FontWeight.w500,
       color: accentColor,
     ),
-    bodyText2: GoogleFonts.openSans(
+    bodyMedium: GoogleFonts.openSans(
       fontSize: 13.0,
       //fontWeight: FontWeight.w700,
       color: Colors.black,
     ),
-    headline1: GoogleFonts.openSans(
+    displayLarge: GoogleFonts.openSans(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     ),
-    headline2: GoogleFonts.openSans(
+    displayMedium: GoogleFonts.openSans(
       fontSize: 21.0,
       fontWeight: FontWeight.w700,
       color: Colors.black,
     ),
-    headline3: GoogleFonts.openSans(
+    displaySmall: GoogleFonts.openSans(
       fontSize: 18.0,
       fontWeight: FontWeight.w600,
       color: Colors.black,
     ),
-    headline6: GoogleFonts.openSans(
+    titleLarge: GoogleFonts.openSans(
       fontSize: 12.0,
       fontWeight: FontWeight.w600,
       color: Colors.black,
@@ -54,32 +54,32 @@ class ProjectTheme {
 
   // 2
   static TextTheme darkTextTheme = TextTheme(
-    bodyText1: GoogleFonts.openSans(
+    bodyLarge: GoogleFonts.openSans(
       fontSize: 14.0,
       fontWeight: FontWeight.w600,
       color: Colors.white,
     ),
-    bodyText2: GoogleFonts.openSans(
+    bodyMedium: GoogleFonts.openSans(
       fontSize: 15.0,
       //fontWeight: FontWeight.w700,
       color: Colors.white,
     ),
-    headline1: GoogleFonts.openSans(
+    displayLarge: GoogleFonts.openSans(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
       color: Colors.white,
     ),
-    headline2: GoogleFonts.openSans(
+    displayMedium: GoogleFonts.openSans(
       fontSize: 21.0,
       fontWeight: FontWeight.w700,
       color: Colors.white,
     ),
-    headline3: GoogleFonts.openSans(
+    displaySmall: GoogleFonts.openSans(
       fontSize: 16.0,
       fontWeight: FontWeight.w600,
       color: Colors.white,
     ),
-    headline6: GoogleFonts.openSans(
+    titleLarge: GoogleFonts.openSans(
       fontSize: 18.0,
       fontWeight: FontWeight.w600,
       color: Colors.white,
@@ -105,8 +105,7 @@ class ProjectTheme {
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
-          ),
-          primary: Colors.green,
+          ), backgroundColor: Colors.green,
         ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -132,8 +131,7 @@ class ProjectTheme {
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
-          ),
-          primary: Colors.green,
+          ), backgroundColor: Colors.green,
         ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(

@@ -1,5 +1,5 @@
 String projectName = "Vantage - Workbench";
-String version = "Version 1.5.25052211";
+String version = "Version 1.6.21061124";
 
 List<String> fetchURL(String text) {
   List<String> urlList = [];
@@ -19,7 +19,7 @@ String ret(String tst) {
   String test = "";
   List<String> htmlTags = ["<p>", "<ul>", "</li>", "</ul>"];
   test = tst.replaceAll("</p>", "\n\n");
-  test = test.replaceAll("<li>", "\n* ");
+  test = test.replaceAll("<li>", "\n• ");
 
   for (String ele in htmlTags) {
     test = test.replaceAll(ele, "");
@@ -51,9 +51,9 @@ Map<String, String> dropPTG = {
 
 Map<String, String> dropDD = {
   "main image url":
-      ",-|,Contains Watermark (Fail),Low Quality/Blurred Image (Fail),Image Unavailable on the URL (Fail),Cropped Images (Fail),No URL (Fail),Dropbox/Google Drive Images (Fail),Lifestyle/Label/Scaling Images (Fail),Mismatch with Base Data (Fail)",
+      "|,Contains Watermark (Fail),Low Quality/Blurred Image (Fail),Image Unavailable on the URL (Fail),Cropped Images (Fail),No URL (Fail),Dropbox/Google Drive Images (Fail),Lifestyle/Label/Scaling Images (Fail),Mismatch with Base Data (Fail)",
   "correct product type":
-      ",-|,Re-tagged to Correct PT (Fail),Image-Content Mismatch (Fail),Different Category PT (Fail),Missing Information (Fail),Not Part of Closed List (Fail)",
+      "|,Re-tagged to Correct PT (Fail),Image-Content Mismatch (Fail),Different Category PT (Fail),Missing Information (Fail),Not Part of Closed List (Fail)",
   "correct product name":
       ",Added Brand,Formatting Errors Fixed,Casing Issues Fixed,Removed special characters/redundant text,Title Structure Fixed,Grammatical Error/Misspelling Fixed|,Missing Information (Fail),Insufficient Character Count (Fail),Missing Key Attributes (Fail)",
   "product short description":
@@ -61,7 +61,7 @@ Map<String, String> dropDD = {
   "product long description":
       ",Edited HTML Tags,Promotional Text Removed,Formatting Errors Fixed,Special characters/redundant text Removed,Grammatical Error/Misspelling Fixed,Casing Issues Fixed|,Duplicate/Repetition of SD (Fail),LD in Paragraph (Fail),Insufficient Bullet Points/Word Count (Fail)",
   "product secondary image url":
-      ",-|,Contains Watermark (Fail),Low Quality/Blurred Image (Fail),Image Unavailable on the URL (Fail),Cropped Images (Fail),No URL (Fail),Insufficient Image Count (Fail),Dropbox/Google Drive images (Fail)",
+      ",|,Contains Watermark (Fail),Low Quality/Blurred Image (Fail),Image Unavailable on the URL (Fail),Cropped Images (Fail),No URL (Fail),Insufficient Image Count (Fail),Dropbox/Google Drive images (Fail)",
   "others":
       ",Curated from Base Data|,Unable to Curate (Fail),Mismatch with Base Data (Fail)"
 };
@@ -186,4 +186,35 @@ String remCommonWords(String text) {
 
   //print(text);
   return text;
+}
+
+String remDoubleSpace(String samp) {
+  samp = samp.replaceAll("  ", " ");
+  List<String> rs = [];
+  print(rs);
+  samp.split(" ").forEach((element) {
+    rs.add(element.trim());
+  });
+  return rs.join(" ");
+}
+
+extension StringManip on String {
+  String sentenceCasingWithPipe() {
+    String rs = "";
+    List<String> ts = split("|");
+
+    var ts1 = ts.map((e) => e.toString().capitalizeFirstofEach);
+    rs = ts1.toList().join("|");
+    print(rs);
+
+    return rs;
+  }
+
+  String get inCaps => '${this[0].toUpperCase()}${substring(1)}';
+  String get allInCaps => toUpperCase();
+  String get capitalizeFirstofEach =>
+      split(" ").map((str) => str.inCaps).join(" ");
+
+  String get sentWithPipe =>
+      split("|").map((str) => str.capitalizeFirstofEach).join("|");
 }

@@ -4,12 +4,11 @@ import 'package:wm_workbench/Provider/provider.dart';
 import 'package:wm_workbench/Screens/addwords.dart';
 import 'package:wm_workbench/Services/methods.dart';
 import 'package:wm_workbench/Widgets/cust_alert.dart';
-import 'package:wm_workbench/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
 
-class CustAppBar extends StatefulWidget with PreferredSizeWidget {
+class CustAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
 
@@ -136,7 +135,7 @@ class _CustAppBarState extends State<CustAppBar> {
                             color: Colors.white70,
                           )),
                     ),
-                    Text(
+                    SelectableText(
                       Provider.of<ProviderOne>(context).id!,
                       style: const TextStyle(fontSize: 14),
                     ),
@@ -152,7 +151,7 @@ class _CustAppBarState extends State<CustAppBar> {
                             color: Colors.white70,
                           )),
                     ),
-                    Text(Provider.of<ProviderOne>(context).pt!,
+                    SelectableText(Provider.of<ProviderOne>(context).pt!,
                         style: const TextStyle(fontSize: 14)),
                     IconButton(
                         onPressed: () {

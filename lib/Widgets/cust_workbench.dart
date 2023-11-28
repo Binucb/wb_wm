@@ -2,6 +2,7 @@ import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wm_workbench/Provider/provider.dart';
+import 'package:wm_workbench/Screens/search_button.dart';
 import 'package:wm_workbench/Services/methods.dart';
 import 'package:wm_workbench/Widgets/cust_alert.dart';
 import 'package:wm_workbench/Widgets/cust_image_list.widget.dart';
@@ -37,7 +38,7 @@ class MyCustWBScreen extends StatelessWidget {
     return (dItem.itemID != "")
         ? Padding(
             padding: const EdgeInsets.all(4.0),
-            child: Container(
+            child: SizedBox(
               height: ht,
               width: wt,
               child: SingleChildScrollView(
@@ -137,7 +138,9 @@ class MyCustWBScreen extends StatelessWidget {
                                                     matchWordBoundaries: false,
                                                     hasSpecialCharacters: true,
                                                     targetString: dupString(
-                                                        dItem.ld!.attrVal!
+                                                        dItem.pn! +
+                                                            " " +
+                                                            dItem.ld!.attrVal!
                                                                 .colValue +
                                                             " " +
                                                             dItem.sd!.attrVal!
@@ -236,7 +239,9 @@ class MyCustWBScreen extends StatelessWidget {
                                                 EasyRichTextPattern(
                                                     matchWordBoundaries: false,
                                                     targetString: dupString(
-                                                        dItem.ld!.attrVal!
+                                                        dItem.pn! +
+                                                            " " +
+                                                            dItem.ld!.attrVal!
                                                                 .colValue +
                                                             " " +
                                                             dItem.sd!.attrVal!
@@ -636,12 +641,12 @@ class _CustBoxState extends State<CustBox> {
               key: widget.key,
               child: DropdownButtonFormField(
                 value: dd1Val ?? "",
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyMedium,
                 decoration: InputDecoration(
                   isDense: true,
                   contentPadding: const EdgeInsets.fromLTRB(10, 15, 10, 10),
                   labelText: "Yes/No",
-                  labelStyle: Theme.of(context).textTheme.bodyText1,
+                  labelStyle: Theme.of(context).textTheme.bodyLarge,
                   border: const OutlineInputBorder(),
                 ),
                 items: _decValues
@@ -700,12 +705,12 @@ class _CustBoxState extends State<CustBox> {
             child: DropdownButtonFormField(
               //second dropdown
               value: dd2Val ?? "",
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
               decoration: InputDecoration(
                 isDense: true,
                 contentPadding: const EdgeInsets.fromLTRB(10, 15, 10, 10),
                 labelText: "Error Code",
-                labelStyle: Theme.of(context).textTheme.bodyText1,
+                labelStyle: Theme.of(context).textTheme.bodyLarge,
                 border: const OutlineInputBorder(),
               ),
               items: erCodValues.map((String? e) {
@@ -758,12 +763,12 @@ class _CustBoxState extends State<CustBox> {
                   //onChanged: (value) => db.saveToDB(widget.comCol!, value),
                   focusNode: FocusNode(canRequestFocus: true),
                   controller: _controller,
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyMedium,
                   decoration: InputDecoration(
                     isDense: true,
                     contentPadding: const EdgeInsets.fromLTRB(10, 15, 10, 10),
                     labelText: "Comments",
-                    labelStyle: Theme.of(context).textTheme.bodyText1,
+                    labelStyle: Theme.of(context).textTheme.bodyLarge,
                     border: const OutlineInputBorder(),
                   ),
                 ),
@@ -978,23 +983,46 @@ class CustAttrCard extends StatelessWidget {
                     child: Focus(
                       onFocusChange: (value) {
                         if (value == false) {
+                          String newString = "";
+                          List<String> saveString =
+                              _controller.text.split("|").toSet().toList();
+
+                          for (var element in saveString) {
+                            if (newString == "") {
+                              newString = element.trim();
+                            } else {
+                              newString =
+                                  "${newString.trim()}|${element.trim()}";
+                            }
+                            // element.trim();
+                          }
+                          if (attrHeader != "Brand" &&
+                              attrHeader != "Correct Product Name" &&
+                              attrHeader != "Correct Product Type") {
+                            newString = remDoubleSpace(newString).sentWithPipe;
+                          } else {
+                            newString = remDoubleSpace(newString);
+                          }
+
+                          // print((remDoubleSpace(newString).inCaps));
+
                           //print("Save : " + _controller.text);
                           //print("Save : " + attrCol.toString());
-                          db.saveToDB(attrCol!, _controller.text.trim());
-                          print(_controller.text);
-                          attr!.attrVal!.colValue = _controller.text.trim();
+                          db.saveToDB(attrCol!, newString);
+                          //print(_controller.text);
+                          attr!.attrVal!.colValue = newString;
                         }
                       },
                       child: TextFormField(
                         //onChanged: (value) => db.saveToDB(attrCol!, value),
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyMedium,
                         controller: _controller,
                         decoration: InputDecoration(
                           isDense: true,
                           contentPadding:
                               const EdgeInsets.fromLTRB(10, 25, 10, 10),
                           labelText: attrHeader,
-                          labelStyle: Theme.of(context).textTheme.bodyText1,
+                          labelStyle: Theme.of(context).textTheme.bodyLarge,
                           border: const OutlineInputBorder(),
                         ),
                       ),
@@ -1044,7 +1072,7 @@ class CustAttrCard extends StatelessWidget {
                               contentPadding:
                                   const EdgeInsets.fromLTRB(10, 12, 10, 8),
                               labelText: attrHeader1,
-                              labelStyle: Theme.of(context).textTheme.bodyText1,
+                              labelStyle: Theme.of(context).textTheme.bodyLarge,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
@@ -1087,14 +1115,14 @@ class CustAttrCard extends StatelessWidget {
                         child: SizedBox(
                           width: (MediaQuery.of(context).size.width * 0.3),
                           child: TextFormField(
-                            style: Theme.of(context).textTheme.bodyText2,
+                            style: Theme.of(context).textTheme.bodyMedium,
                             controller: _controller2,
                             decoration: InputDecoration(
                               isDense: true,
                               contentPadding:
                                   const EdgeInsets.fromLTRB(10, 15, 10, 10),
                               labelText: attrHeader2,
-                              labelStyle: Theme.of(context).textTheme.bodyText1,
+                              labelStyle: Theme.of(context).textTheme.bodyLarge,
                               border: const OutlineInputBorder(),
                             ),
                           ),
@@ -1143,9 +1171,10 @@ class _RowChipsState extends State<RowChips> {
     int colNo = prov.listNo;
 
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(3.0),
       child: Column(
         children: [
+          const SearcFeature(),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -1161,7 +1190,7 @@ class _RowChipsState extends State<RowChips> {
                         (colNo != 0) ? Colors.black54 : accentColor,
                     label: const Text(
                       "All Attributes",
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+                      style: TextStyle(fontSize: 10, color: Colors.white),
                     ),
                   ),
                 ),
@@ -1175,7 +1204,7 @@ class _RowChipsState extends State<RowChips> {
                         (colNo != 1) ? Colors.black54 : accentColor,
                     label: const Text(
                       "Content Match",
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+                      style: TextStyle(fontSize: 10, color: Colors.white),
                     ),
                   ),
                 ),
@@ -1190,7 +1219,7 @@ class _RowChipsState extends State<RowChips> {
                         (colNo != 2) ? Colors.black54 : accentColor,
                     label: const Text(
                       "Partial Match",
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+                      style: TextStyle(fontSize: 10, color: Colors.white),
                     ),
                   ),
                 ),
@@ -1204,7 +1233,7 @@ class _RowChipsState extends State<RowChips> {
                         (colNo != 3) ? Colors.black54 : accentColor,
                     label: const Text(
                       "No Match",
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+                      style: TextStyle(fontSize: 10, color: Colors.white),
                     ),
                   ),
                 ),
@@ -1218,14 +1247,14 @@ class _RowChipsState extends State<RowChips> {
                         (colNo != 4) ? Colors.black54 : accentColor,
                     label: const Text(
                       "Errors",
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+                      style: TextStyle(fontSize: 10, color: Colors.white),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           ElevatedButton.icon(
               onPressed: () async {
                 List<String> fnErr = findErrors(widget.dItem!, context);
@@ -1257,8 +1286,8 @@ class _RowChipsState extends State<RowChips> {
               },
               icon: const Icon(Icons.save),
               label: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Save Record", style: TextStyle(fontSize: 18)),
+                padding: EdgeInsets.all(6.0),
+                child: Text("Save Record", style: TextStyle(fontSize: 14)),
               )),
           const SizedBox(height: 10),
           Row(

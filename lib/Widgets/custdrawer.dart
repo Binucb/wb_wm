@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:wm_workbench/Provider/provider.dart';
-import 'package:wm_workbench/Screens/config_filescreen.dart';
 import 'package:wm_workbench/Screens/workbench_screen.dart';
 import 'package:wm_workbench/constants.dart';
 import 'package:wm_workbench/main.dart';
-import 'package:universal_html/html.dart' as html;
 
 class DrawerCustom extends StatelessWidget {
   const DrawerCustom({
@@ -27,7 +25,7 @@ class DrawerCustom extends StatelessWidget {
           ),
           Text(
             projectName,
-            style: Theme.of(context).textTheme.headline2,
+            style: Theme.of(context).textTheme.displayMedium,
           ),
           Text(
             configDB.get("lStatus")!,
@@ -44,7 +42,7 @@ class DrawerCustom extends StatelessWidget {
             height: 15,
           ),
           custDrawer(context, Icons.dashboard, () {
-            _loading.fetchAlbum();
+            //_loading.fetchAlbum();
             // Navigator.pop(context);
             // _ab.chgWBScreen(false);
             // db.changedl(true);
@@ -122,7 +120,7 @@ Widget custDrawer(BuildContext context, IconData drIcon,
             onPressed: runFunciton,
             child: Text(
               lable,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ))
       ],
     ),

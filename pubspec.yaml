@@ -27,17 +27,17 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  cloud_firestore: ^3.1.10
+  cloud_firestore: ^4.13.2
   csv: ^5.0.1
   cupertino_icons: ^1.0.2
   easy_rich_text: ^0.5.7
   excel: ^2.0.0-null-safety-3
   file_picker: ^4.0.0
-  firebase_core: ^1.13.1
-  firebase_storage: ^10.2.9
+  firebase_core: ^2.23.0
+  firebase_storage: ^11.5.2
   flutter:
     sdk: flutter
-  google_fonts: ^2.1.0
+  google_fonts: ^4.0.1
   hashids2: ^2.0.0
   hive: ^2.0.4
   hive_flutter: ^1.1.0

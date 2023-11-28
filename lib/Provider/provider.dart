@@ -1,6 +1,5 @@
 import 'package:csv/csv.dart';
 import 'package:excel/excel.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -81,8 +80,8 @@ class ProviderOne extends ChangeNotifier {
 }
 
 class PTProvider extends ChangeNotifier {
-  int? _ptCnt = 1;
-  List<String> _attrWrds = [];
+  final int? _ptCnt = 1;
+  final List<String> _attrWrds = [];
 
   getCsv(String cat, String ptg) async {
     final myData = await rootBundle.loadString("assets/csv/config_master.csv");
@@ -207,7 +206,7 @@ class AttProvider extends ChangeNotifier {
 }
 
 class DBProvider extends ChangeNotifier {
-  List<ItemDisplay> _itmDisp = [];
+  final List<ItemDisplay> _itmDisp = [];
   Display _item = Display();
   Display get item => _item;
   // var ky = configDB.get("actID");
@@ -227,8 +226,10 @@ class DBProvider extends ChangeNotifier {
 
   int _listNo = 0;
   int get listNo => _listNo;
+  String _searchString = "";
+  String get searchString => _searchString;
 
-  List<Attribute>? _showList1 = [];
+  final List<Attribute>? _showList1 = [];
   List<Attribute>? get showList1 {
     if (_listNo == 0) {
       return item.lstAttrs4!;
@@ -248,7 +249,14 @@ class DBProvider extends ChangeNotifier {
       return item.lstAttrs4!
           .where((element) => element.err!.isNotEmpty)
           .toList();
+    } else if (_listNo == 5) {
+      return item.lstAttrs4!
+          .where((element) => element.attrVal!.header!
+              .toLowerCase()
+              .contains(_searchString.toLowerCase()))
+          .toList();
     }
+    return null;
   }
 
   changeList1(int val1) {
@@ -256,7 +264,13 @@ class DBProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<dynamic, MainDB>? _flMap = Map();
+  changeSearLsNo(int val, String search) {
+    _searchString = search;
+    _listNo = val;
+    notifyListeners();
+  }
+
+  Map<dynamic, MainDB>? _flMap = {};
   Map<dynamic, MainDB>? get flMap => _flMap;
 
   changeFlMap(Map<dynamic, MainDB> dbMap) {
@@ -409,15 +423,11 @@ class DBProvider extends ChangeNotifier {
         print('ln179 executed in ${stopwatch.elapsed}');
         for (var element in tstList!.itemDetails!) {
           //print(element.toLowerCase().toString());
-          if (element != null) {
-            headers.add(element.toLowerCase().toString());
-          }
-        }
+          headers.add(element.toLowerCase().toString());
+                }
         int idCol = headers.indexOf("item id");
-        if (idCol != null) {
-          configDB.put("idCol", idCol.toString());
-        }
-
+        configDB.put("idCol", idCol.toString());
+      
         int ptCol = headers.indexOf("product type");
 
         int stCol = headers.indexOf("status");

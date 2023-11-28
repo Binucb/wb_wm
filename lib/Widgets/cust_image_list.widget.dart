@@ -23,7 +23,7 @@ class _CustImageListState extends State<CustImageList> {
     Display itm = itemProv.item;
     print("I am called from buildmethod");
     return Dialog(
-        child: Container(
+        child: SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(

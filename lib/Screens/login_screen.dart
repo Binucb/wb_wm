@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:universal_html/html.dart';
 import 'package:wm_workbench/constants.dart';
 import 'package:wm_workbench/main.dart';
 
@@ -9,7 +7,6 @@ import 'package:wm_workbench/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:wm_workbench/Provider/provider.dart';
 import 'package:hashids2/hashids2.dart';
-import 'package:universal_html/html.dart' as html;
 
 class LoginScreen extends StatefulWidget {
   static const String route = '/loginscreen';
@@ -28,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // var categories = [
   //   'Choose Category',
-  //   'Apparel',
+  //   'Apparel',O
   //   'Furniture',
   //   'F&B',
   //   'Home',
@@ -59,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Center(
           child: Card(
             elevation: 3,
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.8,
               width: MediaQuery.of(context).size.width * 0.7,
               child: Row(
@@ -73,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
+                    child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.8,
                       width: MediaQuery.of(context).size.width * 0.305,
                       child: Column(
@@ -144,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 20),
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.green,
+                                backgroundColor: Colors.green,
                               ),
                               onPressed: () async {
                                 // if (dropdownvalue != "Choose Category" &&

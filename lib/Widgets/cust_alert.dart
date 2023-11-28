@@ -405,7 +405,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                             child: TextFormField(
                               maxLines: 10,
                               //onChanged: (value) => db.saveToDB(attrCol!, value),
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                               controller: _sdController,
                               decoration: InputDecoration(
                                 isDense: true,
@@ -413,7 +413,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                                     const EdgeInsets.fromLTRB(10, 25, 10, 10),
                                 labelText: widget.dItem!.sd!.attrVal!.header,
                                 labelStyle:
-                                    Theme.of(context).textTheme.bodyText1,
+                                    Theme.of(context).textTheme.bodyLarge,
                                 border: const OutlineInputBorder(),
                               ),
                             ),
@@ -436,7 +436,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                             child: TextFormField(
                               maxLines: 7,
                               //onChanged: (value) => db.saveToDB(attrCol!, value),
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                               controller: _ldController,
                               decoration: InputDecoration(
                                 isDense: true,
@@ -444,7 +444,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                                     const EdgeInsets.fromLTRB(10, 25, 10, 10),
                                 labelText: widget.dItem!.ld!.attrVal!.header,
                                 labelStyle:
-                                    Theme.of(context).textTheme.bodyText1,
+                                    Theme.of(context).textTheme.bodyLarge,
                                 border: const OutlineInputBorder(),
                               ),
                             ),

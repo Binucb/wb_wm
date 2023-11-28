@@ -30,7 +30,7 @@ class AddWords extends StatelessWidget {
                           border: OutlineInputBorder(),
                         )),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   ElevatedButton(
                       onPressed: () {
                         var of =
@@ -60,7 +60,7 @@ class AddHighlter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
+      child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.6,
         child: Wrap(
             spacing: 6.0, runSpacing: 6.0, children: listChipsCustom(context)),
